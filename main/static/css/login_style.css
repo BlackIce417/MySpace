@@ -1,0 +1,153 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+}
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 32px;
+    padding-bottom: 24px;
+}
+
+.logo-header{
+    font-size: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.logo-header-img {
+    width: 100px;
+    height: auto;
+}
+
+
+.login-form{
+    width: 260px;
+    margin: auto;
+}
+
+.login-form input {
+    border-radius: 6px;
+    border: 1px solid #d0d7deb3;
+}
+
+.login-form-header{
+    margin:0;
+}
+.login-form-header h1 {
+    font-weight: lighter;
+    font-size: 20px;
+    text-align: center;
+}
+
+.login-wrapper{
+    font-size: 14px;
+    background: #f6f8fa;
+    border-radius: 6px;
+    border: 1px solid #d0d7deb3;
+    margin: auto;
+}
+
+.login-wrapper form{
+    margin: 5px 10px 5px;
+}
+
+.username-field {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.username-field label {
+    margin-bottom: 5px;
+    font-weight: lighter;
+}
+.username-field input {
+    width: 100%;
+}
+
+.username-field input:focus {
+    outline: none;
+    border: 2px solid #0a58ca;
+}
+
+.passwd-field {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+
+
+.passwd-field .label-link {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.passwd-field .label-link label {
+    margin-bottom: 5px;
+    font-weight: lighter;
+}
+
+.passwd-field .label-link a {
+    text-decoration: none;
+    font-size: 10px;
+}
+
+.passwd-field input {
+    width: 100%;
+}
+
+.passwd-field input:focus {
+    outline: none;
+    border: 2px solid #0a58ca;
+}
+
+.login-wrapper .btn-submit {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.login-callout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    border: 1px solid #d0d7deb3;
+    border-radius: 6px;
+    height: 80px;
+}
+
+.login-callout p{
+    margin: 0;
+    font-weight: lighter;
+    font-size: 15px;
+}
+
+.alert-wrapper {
+    margin: 0;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-error-msg {
+    font-weight: lighter;
+    font-size: 13px;
+    margin: 0;
+}
+
+
+
+

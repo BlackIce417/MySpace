@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/usercenter_style.css' %}">
+</head>
+<body>
+{% if user == request.user %}
+    <div class="container">
+        <div class="row userprofile-head">
+            <div class="col-9 userinfo">
+                <div class="userinfo-avator">
+                    <img src="{% static 'image/default-avatar.png' %}">
+                </div>
+                <div class="userinfo-basic">
+                    <span>{{ user.username }}  {{ user.email }}</span>
+                    <input type="text" {% if Bio %}value="{{ Bio }}" {% else %}value="Nothing here"{% endif %}>
+                </div>
+            </div>
+            <div class="col-3 opt-field d-flex justify-content-end">
+                <a href="#" class="btn btn-light btn-sm">Edit</a>
+                <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Sign out</a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-light warningbox">
+        <p>You are not allow to here</p>
+        <button class="btn btn-danger"><a href="{% url 'index' %}">I get it</a></button>
+    </div>
+{% endif %}
+</body>
+</html>

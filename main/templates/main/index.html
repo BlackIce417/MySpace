@@ -1,0 +1,88 @@
+{% extends "main/main_layout.html" %}
+{% load filters %}
+
+{% block content %}
+    <div class="main-container">
+        <div class="main-sidebar col-md-3 col-lg-2">
+            <h5>Latest Changes</h5>
+            <hr>
+            {%   for i in rooms %}
+                <div class="sidebar-changes">
+                    <p>{{ i.owner }} -- {{ i.title }}</p>
+                    <small>{{ i.updated_at|custom_timesince_or_date }}</small>
+                </div>
+                <hr>
+            {% endfor %}
+
+        </div>
+        <div class="main-content">
+            {% for i in rooms %}
+                <div class="main-topicblock">
+                    <h5><a href="{% url 'topic' %}?topic_id={{ i.id }}">{{ i.title }}</a></h5>
+                    <p>{{ i.description }}</p>
+                    <small style="margin-right: 10px">{{ i.participants.count }} participants</small>
+                    {% for p in i.participants.all|slice:":5" %}
+                        <small>{{ p.username }}</small>
+                    {% endfor %}
+                    <hr>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        .sidebar-changes{
+            margin: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-changes p {
+            margin: 0;
+        }
+
+        .sidebar-changes small {
+            color: darkgray;
+        }
+
+        .main-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .main-container .main-sidebar {
+            border: 1px solid #d0d7deb3;
+            text-align: center;
+        }
+
+
+        .main-container .main-sidebar h5 {
+            margin-top: 5px;
+        }
+
+        .main-container .main-sidebar hr {
+            width: 80%;
+            margin: auto;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            margin-left: 30px;
+        }
+
+        .main-content .main-topicblock h5 a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .main-content .main-topicblock hr {
+            width: 80%;
+        }
+
+        .main-topicblock {
+            margin-top: 5px;
+        }
+
+    </style>
+
+{% endblock %}

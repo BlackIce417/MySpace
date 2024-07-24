@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="{% static 'css/login_style.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="header">
+{#    <h1 class="logo-header">Just For Fun</h1>#}
+    <img src="{% static 'image/logo.png' %}" class="logo-header-img" alt="logo">
+</div>
+<div class="login-form">
+    <div class="login-form-header">
+        <h1>Sign in to the Space</h1>
+    </div>
+    {% if login_error %}
+        <div class="alert alert-danger alert-dismissible alert-wrapper" id="alertWrapper">
+            <div>
+                <p class="login-error-msg">{{ login_error }}</p>
+                <button class="btn btn-close btn-sm" aria-label="Close" id="btnCloseLoginErrorMsg"></button>
+            </div>
+        </div>
+    {% endif %}
+    <div class="login-wrapper">
+        <form method="post" action="" id="loginForm">
+            {% csrf_token %}
+            <div class="username-field">
+                <label for="username">Username: </label>
+                <input type="text" id="username" name="username" value="{{ username }}" tabindex="1" required>
+            </div>
+            <div class="passwd-field">
+                <div class="label-link">
+                    <label for="password">Password: </label>
+                    <a href="">Forget password?</a>
+                </div>
+                <input type="password" id="password" name="password" value="{{ password }}" tabindex="2" required>
+            </div>
+            <input type="submit" id="btnLogin" class="btn btn-success btn-sm btn-submit" value="Sign In">
+        </form>
+
+    </div>
+    <div class="login-callout">
+        <p>New in here? <a href="{% url 'register' %}">Create an account</a></p>
+    </div>
+</div>
+</body>
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script>
+    $(document).ready(function (){
+        $("#btnCloseLoginErrorMsg").click(function (){
+                $("#alertWrapper").css("display", "none")
+            }
+        );
+
+        $("#btnLogin").click(function (){
+            var ref = $("#loginForm").find("[required]")
+            if (ref.val() === "") {
+                $(this).focus;
+            }
+            else {
+                var btn = $("#btnLogin");
+                btn.val("Signing In...");
+                btn.css({"border": "0"});
+                btn.addClass(" bg-success-subtle");
+                btn.attr({"disabled": true});
+
+                $("#loginForm")[0].submit();
+            }
+        });
+    })
+
+</script>
+</html>

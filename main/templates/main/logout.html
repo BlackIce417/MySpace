@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign out</title>
+    <link href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+<dialog open>
+    <h5>Just For Fun</h5>
+    <p>Are you sure to sign out</p>
+    <form method="post" action="">
+        {% csrf_token %}
+        <input class="btn btn-danger btn-sm" type="submit" value="Sure">
+        <a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
+    </form>
+</dialog>
+</body>
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    dialog {
+        text-align: center;
+        background: #f6f8fa;
+        border-radius: 6px;
+        border: 1px solid #d0d7deb3;
+        width: 320px;
+        margin-top: 90px
+    }
+</style>
+</html>

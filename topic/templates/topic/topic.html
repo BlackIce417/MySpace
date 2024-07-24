@@ -1,0 +1,186 @@
+{% load static %}
+{% load filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Topics</title>
+    <link rel="stylesheet" href="{% static 'topic/css/topic_style.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}">
+</head>
+<body>
+<div class="container">
+    {% include 'topic/topic_navbar.html' %}
+    <div class="topic-header">
+        <div>
+            <h3>{{ topic.title }}</h3>
+            <p>{{ topic.description }}</p>
+        </div>
+        <div class="topic-user-info">
+            <img src="{{ user_profile.avatar.url }}" alt="{{ user_profile.user }}">
+            <span>{{ user_profile.user.username }}</span>
+        </div>
+    </div>
+    <hr style="margin: 0;">
+    {% for ans in answers %}
+        <div class="answer-room">
+            <div class="answer-user">
+                <img src="{{ ans.owner.userprofile.avatar.url }}" alt="Avatar">
+                <div class="ans-user-textinfo">
+                    <p>{{ ans.owner.username }}</p>
+                    {% if ans.owner == topic.owner %}
+                        <small class="hint">Question Author</small>
+                    {% endif %}
+                    {% if ans.owner == request.user %}
+                        <small class="hint">My Answer</small>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="answer-body">
+                <p>{{ ans.answer_body }}</p>
+            </div>
+            <div class="ans-bottombar">
+                <div class="common-field" id="common-field" >
+                    <small class="hint">{{ ans.created_at | custom_timesince_or_date }}</small>
+                    <div class="comment-field" id="comment-field" data-index="{{ forloop.counter0 }}">
+                        <svg t="1720718221228" class="icon-comment" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4280" width="30" height="30"><path d="M139.4 815.8c-8.3 0-15.8-2.3-22.1-8.3-16.6-15.6-8.5-40.4 6.1-85.2 3.6-11.1 7-20.8 7.7-25.6l-0.1-525c0-36.2 30.6-65.7 68.2-65.7h688.7c37.6 0 68.2 29.4 68.2 65.7V733c0 36.2-30.6 65.7-68.2 65.7H199.1c-2.5 0.6-9.2 3.3-16.4 6-16 5.7-30.7 11.1-43.3 11.1z m59.7-659c-9.6 0-17.4 6.7-17.4 14.8v527c0 7.9-2.9 17.2-10.1 39.3-1.7 5.2-3.9 11.9-6 18.8 15.5-5.7 24.8-8.9 33.5-8.9h688.7c9.6 0 17.4-6.7 17.4-14.8V171.6c0-8.2-7.8-14.8-17.4-14.8H199.1z" fill="#bfbfbf" p-id="4281"></path><path d="M345.7 454.2m-31.1 0a31.1 31.1 0 1 0 62.2 0 31.1 31.1 0 1 0-62.2 0Z" fill="#bfbfbf" p-id="4282"></path><path d="M556.8 454.2m-31.1 0a31.1 31.1 0 1 0 62.2 0 31.1 31.1 0 1 0-62.2 0Z" fill="#bfbfbf" p-id="4283"></path><path d="M746.3 454.2m-31.1 0a31.1 31.1 0 1 0 62.2 0 31.1 31.1 0 1 0-62.2 0Z" fill="#bfbfbf" p-id="4284"></path></svg>
+                        <small id="comment-count-hint">{{ ans.comment_count }} comments</small>
+                    </div>
+                </div>
+                {% if request.user == ans.owner %}
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'answer' %}?topic_id={{ topic.id }}" type="button" class="btn btn-primary btn-sm btn-edit-ans" >Edit</a>
+                        <button class="btn btn-danger btn-sm btn-delete-ans" data-answer-id="{{ ans.id }}" id="delete-ans">Delete</button>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="comment-box" id="comment-box-{{ forloop.counter0 }}">
+                <form method="post" action="{% url 'quick_add_comment' 0 %}" class="form-quick-add-comment">
+                    {% csrf_token %}
+                    <div class="comment-input-field">
+                        <img src="{{ user_profile.avatar.url }}" style="height: 50px;width: 50px; margin: 0 auto">
+                        <div class="comment-text-field">
+                            <input class="quick-comment" name="comment" data-index="{{ forloop.counter0 }}" placeholder="Reply to {{ ans.owner }}">
+                            <div class="comment-hide">
+                                <div class="comment-opt-field d-flex ">
+                                    <button class="btn btn-primary btn-sm btn-quick-add-comment" type="submit" id="" data-answer-id="{{ ans.id }}">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="chatting-field">
+                    <div class="chatting-head">
+                        <h5>{{ ans.comment_count }} comments</h5>
+                    </div>
+                    <hr style="background: #d0d7d3b3; margin: 0;">
+                    <div class="chatting-body">
+                        {% for comment in comments%}
+                            {% if comment.answer_room.id == ans.id and comment.father_comment_id == None %}
+                                <div class="comment-block">
+                                    <div class="comment-block-userinfo d-flex">
+                                        <img src="{{ comment.user.userprofile.avatar.url }}" style="width: 30px; height: 30px">
+                                        <p>{{ comment.user.username }}</p>
+                                        {% if request.user == comment.user %}
+                                            <small class="hint">My Comment</small>
+                                        {% endif %}
+                                    </div>
+                                    <p class="comment-content">{{ comment.comment_body }}</p>
+                                    <div class="comment-bottom">
+                                        <small class="hint">{{ comment.created_at | custom_timesince_or_date }}</small>
+                                        <div class="comment-bottom-opt-field">
+                                            <a href="{% url 'reply_comment' comment.id %}" class="btn btn-primary btn-sm" target="_blank">Reply</a>
+                                            <form method="post" action="{% url 'delete_comment' comment.id %}">
+                                            {% csrf_token %}
+                                                <button class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="replied-comments-field">
+                                    {% for replied_comment in comments %}
+                                    {% if replied_comment.father_comment == comment %}
+                                        <div class="replied-comment">
+                                            <div class="h-userinfo d-flex">
+                                                <img src="{{ comment.user.userprofile.avatar.url }}" style="width: 30px; height: 30px">
+                                                <p>{{ comment.user.username }} {% if comment.user != replied_comment.user %}--> {{ replied_comment.user.username }}{% endif %}</p>
+                                            </div>
+                                            <p class="replied-comment-body">{{ replied_comment.comment_body }}</p>
+                                            <div class="comment-bottom">
+                                                <small class="hint">{{ comment.created_at | custom_timesince_or_date }}</small>
+                                            <div class="comment-bottom-opt-field">
+                                            <a href="{% url 'reply_comment' comment.id %}" class="btn btn-primary btn-sm" target="_blank">Reply</a>
+                                            <form method="post" action="{% url 'delete_comment' comment.id %}">
+                                                {% csrf_token %}
+                                                <button class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+    {% endfor %}
+    <form method="post" action="{%  url 'delete_answer' 0 %}" id="form-delete-answer">
+        {% csrf_token %}
+        <dialog id="hint-delete-ans">
+            <h5>Are you sure to delete this answer ?</h5>
+            <div class="opt-field">
+                <button class="btn btn-light btn-sm" id="hint-no">Not Sure</button>
+                <button class="btn btn-danger btn-sm" type="submit">Yes</button>
+            </div>
+        </dialog>
+    </form>
+</div>
+</body>
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $(".btn-edit-ans").css("height", $('.hint').outerHeight);
+        $(".btn-delete-ans").css("height", $('.hint').outerHeight);
+
+        $("#delete-ans").click(function () {
+            let ans_id = $(this).data("answer-id");
+            let action = "{%  url 'delete_answer' 0 %}".replace("0", ans_id);
+            $('#form-delete-answer').attr('action', action);
+            $("#hint-delete-ans")[0].showModal();
+        })
+
+        $(".btn-quick-add-comment").click(function() {
+            let ans_id = $(this).data("answer-id");
+            let action = "{% url 'quick_add_comment' 0 %}" .replace("0", ans_id);
+
+            $('.form-quick-add-comment').attr('action', action);
+        })
+
+        $("#hint-no").click(function (event) {
+            event.preventDefault();
+            $("#hint-delete-ans")[0].close();
+        })
+
+        $(`.comment-field`).click(function () {
+            let index = $(this).data('index');
+            $(`#comment-box-${index}`).toggle();
+        })
+
+        $(".quick-comment").click(function () {
+            $(".comment-hide").css("display", "flex");
+        })
+
+        $(document).click(function(event) {
+            if (!$(event.target).closest('.comment-input-field').length) {
+                {#alert(".comment-hide: " + $(event.target).closest('.comment-hide').length)#}
+                $(".comment-hide").css("display", "none");
+            }
+        });
+    })
+</script>
+</html>
+

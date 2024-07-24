@@ -1,0 +1,21 @@
+
+    {% csrf_token %}
+    <div class="text-field">
+        <textarea name="answer_body" type="text" class="answer-textbody"> {% if answer_context %}
+            {{ answer_context }}{% endif %}</textarea>
+    </div>
+    <div class="opt-field">
+        <input type="submit" class="btn btn-primary" value="submit">
+    </div>
+
+
+<style>
+    .answer-textbody {
+        height: 300px;
+        width: 100%;
+    }
+
+    .opt-field {
+        margin-top: 10px;
+    }
+</style>

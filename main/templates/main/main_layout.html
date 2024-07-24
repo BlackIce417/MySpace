@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Space</title>
+    <link href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css'%}" rel="stylesheet">
+</head>
+<body>
+<div>
+    {% include 'main/main_navbar.html' %}
+    {% block content %}
+    {% endblock %}
+
+</div>
+</body>
+<script src="{% static 'bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.min.js' %}"></script>
+<style>
+</style>
+</html>

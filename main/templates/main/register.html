@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/register_style.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="header">
+    {#    <h1 class="logo-header">Just For Fun</h1>#}
+    <img src="{% static 'image/logo.png' %}" class="logo-header-img" alt="logo">
+</div>
+{% if register_error %}
+    {#    <dialog open>#}
+    {#        {% for i in register_error.password2%}#}
+    {#            <p>{{ i.message }}</p>#}
+    {#        {% endfor %}#}
+    {#    </dialog>#}
+{% endif %}
+<div class="registerbox-wrapper">
+    <div class="registerbox-content">
+        <form action="{% url 'register' %}" method="post" id="registerForm">
+            {% csrf_token %}
+            <div class="username-field">
+                <label for="{{ login_form.username.id_for_label }}">Username:</label>
+                {{ login_form.username }}
+            </div>
+            {% if register_error.username %}
+                <div class="alert alert-danger errorbox">
+                    {% for i in register_error.username%}
+                        <p>{{ i.message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="passwd-field">
+                <label for="{{ login_form.password1.id_for_label }}">Password:</label>
+                {{ login_form.password1 }}
+                <label for="{{ login_form.password2.id_for_label }}">Password confirmation:</label>
+                {{ login_form.password2 }}
+            </div>
+            {% if register_error.password2 %}
+                <div class="alert alert-danger errorbox">
+                    {% for i in register_error.password2%}
+                        <p>{{ forloop.counter }}. {{ i.message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <button id="btn-submit" class="btn btn-success btn-sm btn-submit" type="submit">Sign Up</button>
+        </form>
+    </div>
+</div>
+<div class="register-callout">
+    <p>Already have your account? <a href="{% url 'login' %}">Go to sign in</a></p>
+</div>
+</body>
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $("#registerForm").submit(function (event) {
+            var password1 = $('#id_password1').val();
+            var password2 = $('#id_password2').val();
+
+            if (password1 !== password2) {
+                alert("Password confirmation fail");
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+</html>

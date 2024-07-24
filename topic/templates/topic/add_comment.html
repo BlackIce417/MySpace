@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Write Comment</title>
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}">
+</head>
+<body>
+<div class="container">
+    <nav class="navbar d-flex">
+        <span class="navbar-brand mb-0 h1">Reply to {{ user.username }}</span>
+        <div class="h-btngroup">
+            <a href="{% url 'user-center' %}?username={{ user.username }}">
+                <img src="{{ request.user.userprofile.avatar.url }}" alt="{{ user_profile.user }}">
+            </a>
+        </div>
+    </nav>
+    <form method="post" action="{% url 'reply_comment' comment.id %}">
+        {% include 'topic/answer_layout.html' %}
+    </form>
+</div>
+</body>
+<style>
+    nav {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    nav li {
+        font-size: 20px;
+    }
+
+    nav .btn-answer {
+        border: 1px solid dodgerblue;
+        width: 100px;
+
+    }
+
+    nav .btn-answer:hover {
+        border: 1px solid dodgerblue;
+    }
+
+    .h-btngroup img {
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+</style>
+</html>

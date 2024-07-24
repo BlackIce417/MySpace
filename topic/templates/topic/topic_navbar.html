@@ -1,0 +1,55 @@
+{% load static %}
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Topic</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ topic.title }}</li>
+    </ol>
+    <div class="h-btngroup">
+        {% if ans_flag %}
+            <a href="{% url 'answer' %}?topic_id={{ topic.id }}" class="btn btn-light btn-answer" id="btn-follow">Answer</a>
+        {% endif %}
+        <a href="#" class="btn btn-primary btn-follow">Follow</a>
+        <a href="{% url 'user-center' %}?username={{ user.username }}"><img src="{{ request.user.userprofile.avatar.url }}" alt="{{ user_profile.user }}"></a>
+    </div>
+</nav>
+<hr>
+
+<style>
+    nav {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    nav li {
+        font-size: 20px;
+    }
+
+    nav .btn-answer {
+        border: 1px solid dodgerblue;
+        width: 100px;
+
+    }
+
+    nav .btn-answer:hover {
+        border: 1px solid dodgerblue;
+    }
+
+    nav .btn-follow {
+        width: 100px;
+    }
+
+    .h-btngroup img {
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+</style>
+
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+    })
+</script>

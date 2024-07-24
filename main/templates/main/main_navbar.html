@@ -1,0 +1,112 @@
+{% load static %}
+<div>
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'index' %}">Just For Fun</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Topics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Tools</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Media
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Videos</a></li>
+                            <li><a class="dropdown-item" href="#">Pictures</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+                <form class="d-flex search-bar">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-secondary btn-sm" type="submit">Search</button>
+                </form>
+                {% if not request.user.is_authenticated %}
+                    <div class="col-sm-12 nav-auth">
+                        <a href="{% url 'login' %}">Sign In</a>
+                        <a href="{% url 'register' %}" class="btn btn-outline-secondary btn-sm">Sign Up</a>
+                    </div>
+                {% else %}
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" href="#" id="userDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{% static 'image/default-avatar.png' %}" id="userAvatar">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" style="min-width: auto" id="userDropdownMenu" aria-labelledby="userDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">{{ request.user.username }}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'user-center' %}?username={{ user.username }}">User Center</a></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Sign Out</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</div>
+
+<style>
+    nav {
+        border: 1px solid #d0d7deb3;
+    }
+
+    #userDropdownMenuLink{
+        font-size: 15px;
+        margin-left: 10px;
+        text-decoration: none;
+    }
+    #userAvatar{
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .search-bar {
+        margin: 0;
+        width: 300px;
+    }
+
+    .nav-auth{
+        margin-left: 10px;
+        width: 140px;
+    }
+
+    .nav-auth a{
+        text-decoration: none;
+        font-size: 15px;
+        color: black;
+        margin:0;
+    }
+
+    .nav-auth a:first-child{
+        transition: color 0.3s ease;
+    }
+
+    .nav-auth a:first-child:hover {
+        color: #7e7d7d;
+    }
+
+    .nav-auth a:nth-child(2) {
+        margin-left: 5px;
+        transition: color 0.3s ease;
+    }
+
+    .nav-auth a:nth-child(2):hover {
+        background: initial;
+        color: #7e7d7d;
+        border: 1px solid #7e7d7d;
+    }
+
+</style>

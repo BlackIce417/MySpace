@@ -1,0 +1,90 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 32px;
+    padding-bottom: 24px;
+}
+
+.logo-header-img {
+    width: 100px;
+    height: auto;
+}
+
+.registerbox-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.registerbox-content {
+    width: 320px;
+    border: 1px solid #d0d7deb3;
+    border-radius: 6px;
+    background: #f6f8fa;
+}
+
+.registerbox-content form {
+    margin: 5px 10px 5px;
+}
+
+.username-field {
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.username-field label {
+    font-weight: lighter;
+}
+
+.passwd-field {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.passwd-field label {
+    margin-top: 5px;
+    font-weight: lighter;
+}
+
+.passwd-field input {
+    width: 100%;
+}
+
+.btn-submit {
+    margin-top: 5px;
+    width: 100%;
+}
+
+.errorbox {
+    margin: 0
+}
+
+.errorbox p {
+    margin: 5px;
+    width: 100%;
+    font-weight: lighter;
+}
+
+.register-callout {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    border: 1px solid #d0d7deb3;
+    border-radius: 6px;
+    height: 80px;
+    width: 320px;
+}
+
+.register-callout p{
+    margin: 0;
+    font-weight: lighter;
+    font-size: 15px;
+}
