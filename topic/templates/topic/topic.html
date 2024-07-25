@@ -41,7 +41,7 @@
             </div>
             <div class="ans-bottombar">
                 <div class="common-field" id="common-field" >
-                    <small class="hint">{{ ans.created_at | custom_timesince_or_date }}</small>
+                    <small class="hint" style="margin-left: 0">{{ ans.created_at | custom_timesince_or_date }}</small>
                     <div class="comment-field" id="comment-field" data-index="{{ forloop.counter0 }}">
                         <svg t="1720718221228" class="icon-comment" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4280" width="30" height="30"><path d="M139.4 815.8c-8.3 0-15.8-2.3-22.1-8.3-16.6-15.6-8.5-40.4 6.1-85.2 3.6-11.1 7-20.8 7.7-25.6l-0.1-525c0-36.2 30.6-65.7 68.2-65.7h688.7c37.6 0 68.2 29.4 68.2 65.7V733c0 36.2-30.6 65.7-68.2 65.7H199.1c-2.5 0.6-9.2 3.3-16.4 6-16 5.7-30.7 11.1-43.3 11.1z m59.7-659c-9.6 0-17.4 6.7-17.4 14.8v527c0 7.9-2.9 17.2-10.1 39.3-1.7 5.2-3.9 11.9-6 18.8 15.5-5.7 24.8-8.9 33.5-8.9h688.7c9.6 0 17.4-6.7 17.4-14.8V171.6c0-8.2-7.8-14.8-17.4-14.8H199.1z" fill="#bfbfbf" p-id="4281"></path><path d="M345.7 454.2m-31.1 0a31.1 31.1 0 1 0 62.2 0 31.1 31.1 0 1 0-62.2 0Z" fill="#bfbfbf" p-id="4282"></path><path d="M556.8 454.2m-31.1 0a31.1 31.1 0 1 0 62.2 0 31.1 31.1 0 1 0-62.2 0Z" fill="#bfbfbf" p-id="4283"></path><path d="M746.3 454.2m-31.1 0a31.1 31.1 0 1 0 62.2 0 31.1 31.1 0 1 0-62.2 0Z" fill="#bfbfbf" p-id="4284"></path></svg>
                         <small id="comment-count-hint">{{ ans.comment_count }} comments</small>
@@ -99,23 +99,27 @@
                                     <div class="replied-comments-field">
                                     {% for replied_comment in comments %}
                                     {% if replied_comment.father_comment == comment %}
+                                        {% if forloop.counter <= 10 %}
                                         <div class="replied-comment">
-                                            <div class="h-userinfo d-flex">
+                                            <div class="h-userinfo d-flex">             
                                                 <img src="{{ comment.user.userprofile.avatar.url }}" style="width: 30px; height: 30px">
-                                                <p>{{ comment.user.username }} {% if comment.user != replied_comment.user %}--> {{ replied_comment.user.username }}{% endif %}</p>
+                                                <p>{{ replied_comment.user.username }} {% if replied_comment.father_comment_id != replied_comment.reply_to_comment_id.id %}--> {{ replied_comment.reply_to.username }}{% endif %}</p>
+
                                             </div>
+
                                             <p class="replied-comment-body">{{ replied_comment.comment_body }}</p>
-                                            <div class="comment-bottom">
-                                                <small class="hint">{{ comment.created_at | custom_timesince_or_date }}</small>
-                                            <div class="comment-bottom-opt-field">
-                                            <a href="{% url 'reply_comment' comment.id %}" class="btn btn-primary btn-sm" target="_blank">Reply</a>
-                                            <form method="post" action="{% url 'delete_comment' comment.id %}">
+                                            <div class="replied-comment-bottom">
+                                                <small class="hint">{{ replied_comment.created_at | custom_timesince_or_date }}</small>
+                                            <div class="replied-comment-bottom-opt-field">
+                                            <a href="{% url 'reply_comment' replied_comment.id %}" class="btn btn-primary btn-sm" target="_blank">Reply</a>
+                                            <form method="post" action="{% url 'delete_comment' replied_comment.id %}">
                                                 {% csrf_token %}
                                                 <button class="btn btn-danger btn-sm">Delete</button>
                                             </form>
                                             </div>
                                             </div>
                                         </div>
+                                        {% endif %}
                                     {% endif %}
                                     {% endfor %}
                                     </div>
@@ -176,7 +180,6 @@
 
         $(document).click(function(event) {
             if (!$(event.target).closest('.comment-input-field').length) {
-                {#alert(".comment-hide: " + $(event.target).closest('.comment-hide').length)#}
                 $(".comment-hide").css("display", "none");
             }
         });

@@ -139,7 +139,7 @@ def reply_to(request, comment_id):
             comment_body=text,
             answer_room=answer_room,
             reply_to=comment.user,
-            reply_to_comment_id=comment_id,
+            reply_to_comment_id=comment,
             father_comment_id=comment_id,
         )
         comment.save()

@@ -210,13 +210,29 @@
 }
 
 .replied-comments-field .replied-comment {
+
     .h-userinfo p {
         margin: auto 0 auto 5px;
     }
 
     .replied-comment-body {
-        padding: 10px 0 0 40px;
+        padding: 0 0 0 40px;
     }
+}
+
+.replied-comments-field .replied-comment-bottom{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 5px;
+}
+
+.replied-comments-field .replied-comment-bottom-opt-field{
+    display: flex;
+    padding-right: 5px;
+}
+
+.replied-comments-field .replied-comment-bottom-opt-field a {
+    margin-right: 5px;
 }
 
 

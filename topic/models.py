@@ -49,14 +49,17 @@ class CommentsRoom(models.Model):
         blank=True,
     )
     reply_to_comment_id = models.ForeignKey(
-        "self", null=True, blank=True, on_delete=models.CASCADE
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="reply_to_comment",
     )
     created_at = models.DateTimeField(auto_now_add=True)
     comment_body = models.TextField(max_length=2000)
     father_comment = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,
-        related_name="son_comment",
         null=True,
         blank=True,
         verbose_name="father comment",
