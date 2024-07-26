@@ -245,13 +245,67 @@
     text-align: center;
     padding: 5px;
     border-radius: 2px;
-    text-decoration: none;
     color: rgb(132, 145, 165);
+    border: none;
 }
 
 .hint-more-comment:focus {
     cursor: pointer;
     outline: none;
+}
+
+.display-all-comment {
+    display: none;
+    align-items: center;
+    position: fixed;
+    z-index: 500;
+    inset: 0;
+    overflow: hidden;
+}
+
+.display-all-comment .backgroud-board{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.65);
+    inset: 0;
+    z-index: 0;
+}
+
+.display-all-comment .comment-box-1 {
+    z-index: 1;
+    width: 700px;
+    height: calc(100vh - 48px);
+    opacity: 1;
+    margin: 0 auto;
+    position: relative;
+    background-color: white;
+}
+
+.box-head {
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.box-head p {
+    margin: auto 10px;
+    font-size: 20px;
+}
+
+.box-head .buttons-field {
+    box-sizing: border-box;
+    padding-right: 10px;
+}
+
+.replied-comment-block {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.avatar-field {
+    box-sizing: border-box;
+    padding: 0 10px;
 }
 
 

@@ -58,7 +58,7 @@
                 <form method="post" action="{% url 'quick_add_comment' 0 %}" class="form-quick-add-comment">
                     {% csrf_token %}
                     <div class="comment-input-field">
-                        <img src="{{ user_profile.avatar.url }}" style="height: 40px;width: 40px; margin: 0 auto">
+                        <img src="{{ request.user.userprofile.avatar.url }}" style="height: 40px;width: 40px; margin: 0 auto">
                         <div class="comment-text-field">
                             <input class="quick-comment" name="comment" data-index="{{ forloop.counter0 }}" placeholder="Reply to {{ ans.owner }}">
                             <div class="comment-hide">
@@ -89,7 +89,7 @@
                                     <div class="comment-bottom">
                                         <small class="hint">{{ comment.created_at | custom_timesince_or_date }}</small>
                                         <div class="comment-bottom-opt-field">
-                                            <a href="{% url 'reply_comment' comment.id %}" class="btn btn-primary btn-sm" target="_blank">Reply</a>
+                                            <a href="{% url 'reply_comment' comment.id %}" class="btn btn-primary btn-sm" >Reply</a>
                                             <form method="post" action="{% url 'delete_comment' comment.id %}">
                                             {% csrf_token %}
                                                 <button class="btn btn-danger btn-sm">Delete</button>
@@ -102,7 +102,7 @@
                                             {% if forloop.counter <= 2 %}
                                             <div class="replied-comment">
                                                 <div class="h-userinfo d-flex">
-                                                    <img src="{{ comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px">
+                                                    <img src="{{ replied_comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px">
                                                     <p>{{ replied_comment.user.username }} {% if replied_comment.father_comment_id != replied_comment.reply_to_comment_id.id %}--> {{ replied_comment.reply_to.username }}{% endif %}</p>
                                                 </div>
                                                 <p class="replied-comment-body">{{ replied_comment.comment_body }}</p>
@@ -112,13 +112,42 @@
                                                         <a href="{% url 'reply_under_father_comment' replied_comment.id replied_comment.father_comment_id %}" class="btn btn-primary btn-sm" target="_blank">Reply</a>
                                                         <form method="post" action="{% url 'delete_comment' replied_comment.id %}">
                                                             {% csrf_token %}
-                                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                                            {% if request.user == replied_comment.user %}
+                                                                <button class="btn btn-danger btn-sm">Delete</button>
+                                                            {% endif %}
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
-    {#                                        {% elif forloop.counter == 3 %}#}
-    {#                                            <a class="hint-more-comment" href="#">View all comments</a>#}
+                                            {% elif forloop.counter == 3 %}
+                                                <button class="hint-more-comment">View all comments</button>
+                                                <div class="display-all-comment">
+                                                    <div class="backgroud-board"></div>
+                                                    <div class="comment-box-1">
+                                                        <div class="box-head">
+                                                            <p>{{ ans.comment_count }} comments</p>
+                                                            <div class="buttons-field">
+                                                                <button type="button" id="hide-comment-box" class="btn-close" aria-label="Close"></button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="replied-comment-field">
+                                                            {% for replied_comment in comments %}
+                                                                {% if replied_comment.father_comment == comment %}
+                                                                    <div class="replied-comment-block">
+                                                                        <div class="avatar-field">
+                                                                            <img src="{{ replied_comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px">
+                                                                        </div>
+                                                                        <div class="replied-comment-text-area">
+                                                                            <p>{{ replied_comment.user.username }} {% if replied_comment.father_comment_id != replied_comment.reply_to_comment_id.id %}--> {{ replied_comment.reply_to.username }}{% endif %}</p>
+                                                                            <p class="replied-comment-body">{{ replied_comment.comment_body }}</p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             {% endif %}
                                         {% endif %}
                                     {% endfor %}
@@ -183,6 +212,14 @@
                 $(".comment-hide").css("display", "none");
             }
         });
+
+        $(".hint-more-comment").click(function() {
+            $('.display-all-comment').css("display", "flex");
+        })
+
+        $("#hide-comment-box").click(function() {
+            $('.display-all-comment').css("display", "none");
+        })
     })
 </script>
 </html>
