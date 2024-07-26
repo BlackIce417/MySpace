@@ -16,7 +16,7 @@
             </a>
         </div>
     </nav>
-    <form method="post" action="{% url 'reply_comment' comment.id %}">
+    <form method="post" {% if father_comment_id == None %}action="{% url 'reply_comment' comment.id %}"{% else %}action="{% url 'reply_under_father_comment' comment.id father_comment_id %}"{% endif %}>
         {% include 'topic/answer_layout.html' %}
     </form>
 </div>

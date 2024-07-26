@@ -85,7 +85,6 @@ def delete_answer(request, answer_id):
 def quick_add_comment(request, answer_id):
     if request.method == "POST":
         try:
-            print(answer_id)
             answer = AnswersRoom.objects.get(id=answer_id)
 
             comment = CommentsRoom.objects.create(
@@ -113,7 +112,7 @@ def delete_comment(request, comment_id):
 
 
 @login_required(login_url="login")
-def reply_to(request, comment_id):
+def reply_to(request, comment_id, father_comment_id=None):
     if request.method == "GET":
         try:
             comment = CommentsRoom.objects.get(id=comment_id)
@@ -121,7 +120,8 @@ def reply_to(request, comment_id):
         except:
             user = None
             comment = None
-        context = {"user": user, "comment": comment}
+        print(father_comment_id)
+        context = {"user": user, "comment": comment, "father_comment_id": father_comment_id}
         return render(
             request,
             "topic/add_comment.html",
@@ -134,14 +134,24 @@ def reply_to(request, comment_id):
             answer_room = comment.answer_room
         except Exception as e:
             return HttpResponse(f"Error: {e}")
-        comment = CommentsRoom.objects.create(
-            user=request.user,
-            comment_body=text,
-            answer_room=answer_room,
-            reply_to=comment.user,
-            reply_to_comment_id=comment,
-            father_comment_id=comment_id,
-        )
+        if father_comment_id is None:
+            comment = CommentsRoom.objects.create(
+                user=request.user,
+                comment_body=text,
+                answer_room=answer_room,
+                reply_to=comment.user,
+                reply_to_comment_id=comment,
+                father_comment_id=comment_id,
+            )
+        else:
+            comment = CommentsRoom.objects.create(
+                user=request.user,
+                comment_body=text,
+                answer_room=answer_room,
+                reply_to=comment.user,
+                reply_to_comment_id=comment,
+                father_comment_id=father_comment_id,
+            )
         comment.save()
         messages.success(request, "Reply Success")
         return redirect(

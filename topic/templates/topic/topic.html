@@ -58,7 +58,7 @@
                 <form method="post" action="{% url 'quick_add_comment' 0 %}" class="form-quick-add-comment">
                     {% csrf_token %}
                     <div class="comment-input-field">
-                        <img src="{{ user_profile.avatar.url }}" style="height: 50px;width: 50px; margin: 0 auto">
+                        <img src="{{ user_profile.avatar.url }}" style="height: 40px;width: 40px; margin: 0 auto">
                         <div class="comment-text-field">
                             <input class="quick-comment" name="comment" data-index="{{ forloop.counter0 }}" placeholder="Reply to {{ ans.owner }}">
                             <div class="comment-hide">
@@ -79,7 +79,7 @@
                             {% if comment.answer_room.id == ans.id and comment.father_comment_id == None %}
                                 <div class="comment-block">
                                     <div class="comment-block-userinfo d-flex">
-                                        <img src="{{ comment.user.userprofile.avatar.url }}" style="width: 30px; height: 30px">
+                                        <img src="{{ comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px">
                                         <p>{{ comment.user.username }}</p>
                                         {% if request.user == comment.user %}
                                             <small class="hint">My Comment</small>
@@ -98,29 +98,29 @@
                                     </div>
                                     <div class="replied-comments-field">
                                     {% for replied_comment in comments %}
-                                    {% if replied_comment.father_comment == comment %}
-                                        {% if forloop.counter <= 10 %}
-                                        <div class="replied-comment">
-                                            <div class="h-userinfo d-flex">             
-                                                <img src="{{ comment.user.userprofile.avatar.url }}" style="width: 30px; height: 30px">
-                                                <p>{{ replied_comment.user.username }} {% if replied_comment.father_comment_id != replied_comment.reply_to_comment_id.id %}--> {{ replied_comment.reply_to.username }}{% endif %}</p>
-
+                                        {% if replied_comment.father_comment == comment %}
+                                            {% if forloop.counter <= 2 %}
+                                            <div class="replied-comment">
+                                                <div class="h-userinfo d-flex">
+                                                    <img src="{{ comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px">
+                                                    <p>{{ replied_comment.user.username }} {% if replied_comment.father_comment_id != replied_comment.reply_to_comment_id.id %}--> {{ replied_comment.reply_to.username }}{% endif %}</p>
+                                                </div>
+                                                <p class="replied-comment-body">{{ replied_comment.comment_body }}</p>
+                                                <div class="replied-comment-bottom">
+                                                    <small class="hint" style="margin-left: 40px">{{ replied_comment.created_at | custom_timesince_or_date }}</small>
+                                                    <div class="replied-comment-bottom-opt-field">
+                                                        <a href="{% url 'reply_under_father_comment' replied_comment.id replied_comment.father_comment_id %}" class="btn btn-primary btn-sm" target="_blank">Reply</a>
+                                                        <form method="post" action="{% url 'delete_comment' replied_comment.id %}">
+                                                            {% csrf_token %}
+                                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
-
-                                            <p class="replied-comment-body">{{ replied_comment.comment_body }}</p>
-                                            <div class="replied-comment-bottom">
-                                                <small class="hint">{{ replied_comment.created_at | custom_timesince_or_date }}</small>
-                                            <div class="replied-comment-bottom-opt-field">
-                                            <a href="{% url 'reply_comment' replied_comment.id %}" class="btn btn-primary btn-sm" target="_blank">Reply</a>
-                                            <form method="post" action="{% url 'delete_comment' replied_comment.id %}">
-                                                {% csrf_token %}
-                                                <button class="btn btn-danger btn-sm">Delete</button>
-                                            </form>
-                                            </div>
-                                            </div>
-                                        </div>
+    {#                                        {% elif forloop.counter == 3 %}#}
+    {#                                            <a class="hint-more-comment" href="#">View all comments</a>#}
+                                            {% endif %}
                                         {% endif %}
-                                    {% endif %}
                                     {% endfor %}
                                     </div>
                                 </div>
