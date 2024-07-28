@@ -64,6 +64,7 @@ class CommentsRoom(models.Model):
         blank=True,
         verbose_name="father comment",
     )
+    level = models.IntegerField(default=1, choices=[(1, 'Level 1'), (2, 'Level 2'),], null=False, blank=False)
 
     def __str__(self):
         return f"{self.answer_room} - {self.user}"
