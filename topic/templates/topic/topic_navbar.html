@@ -10,7 +10,7 @@
             <a href="{% url 'answer' %}?topic_id={{ topic.id }}" class="btn btn-light btn-answer" id="btn-follow">Answer</a>
         {% endif %}
         <a href="#" class="btn btn-primary btn-follow">Follow</a>
-        <a href="{% url 'user-center' %}?username={{ user.username }}"><img src="{{ request.user.userprofile.avatar.url }}" alt="{{ user_profile.user }}"></a>
+        <a href="{% url 'user-center' %}?username={{ requestuser.username }}"><img src="{{ request.user.userprofile.avatar.url }}" alt="{{ user_profile.user }}"></a>
     </div>
 </nav>
 <hr>
