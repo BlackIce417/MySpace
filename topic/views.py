@@ -27,20 +27,18 @@ def formate_comments_info(
     answer_id = [i.id for i in answer]
     for ans_id in answer_id:
         comment_info = copy.deepcopy(comment_info_template)
+        comment_info["comments"]["level1"].clear()
         comment_info["answer"] = ans_id
         comment_info["comments"]["count"] = AnswersRoom.objects.get(
             id=ans_id
         ).comment_count
         comments_l1 = CommentsRoom.objects.filter(answer_room_id=ans_id, level=1)
         if comments_l1.exists():
-
             for l1 in comments_l1:
-                print(l1.id)
                 comments_l2 = CommentsRoom.objects.filter(
                     answer_room_id=ans_id, level=2, father_comment_id=l1.id
                 )
                 if comments_l2.exists():
-                    comment_info["comments"]["level1"].clear()
                     comment_info["comments"]["level1"].append(
                         {"comment": l1, "level2": comments_l2}
                     )

@@ -105,7 +105,7 @@
                             </div>
                           </div>
                           <div class="replied-comments-field">
-                            {% for replied_comment in item.level2 %}
+                            {% for replied_comment in item.level2 %} 
                               {% if replied_comment.father_comment == comment %}
                                 {% if forloop.counter <= 2 %}
                                   <div class="replied-comment">
@@ -136,10 +136,13 @@
                                   <div class="display-all-comment">
                                     <div class="backgroud-board"></div>
                                     <div class="comment-box-1">
+                                      <div class="father-comment">
+                                        <p>{{ comment.comment_body }}</p>
+                                      </div>
                                       <div class="box-head">
-                                        <p>{{ ans.comment_count }} comments</p>
+                                        <p>{{ item.level2 | length }} comments</p>
                                         <div class="buttons-field">
-                                          <button type="button" id="hide-comment-box" class="btn-close" aria-label="Close"></button>
+                                          <button type="button" class="btn-close hide-comment-box" aria-label="Close"></button>
                                         </div>
                                       </div>
                                       <div class="replied-comment-field">
@@ -234,7 +237,7 @@
         $('.display-all-comment').css('display', 'flex')
       })
     
-      $('#hide-comment-box').click(function () {
+      $('.hide-comment-box').click(function () {
         $('.display-all-comment').css('display', 'none')
       })
     })
