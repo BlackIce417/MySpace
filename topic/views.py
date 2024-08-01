@@ -14,7 +14,7 @@ from .models import *
 
 
 def formate_comments_info(
-    answer: QuerySet[AnswersRoom],
+    answer: QuerySet[AnswersRoom]
 ):
     comment_info_template = {
         "answer": int,
