@@ -5,6 +5,10 @@
     padding-bottom: 10px;
 }
 
+.topic-header p {
+    margin: 0;
+}
+
 .topic-user-info img {
     width: 30px;
     height: 30px;
@@ -298,7 +302,7 @@
 }
 
 .display-all-comment .comment-box-1 .father-comment {
-    margin: 0;
+    margin: 10px 0 0 0;
     display: flex;
 }
 
@@ -312,6 +316,7 @@
 .box-head p {
     margin: auto 10px;
     font-size: 20px;
+    font-weight: bold;
 }
 
 .replied-comment-block {

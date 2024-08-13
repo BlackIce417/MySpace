@@ -13,16 +13,19 @@
         <div class="row userprofile-head">
             <div class="col-9 userinfo">
                 <div class="userinfo-avator">
-                    <img src="{% static 'image/default-avatar.png' %}">
+                    <img src="{{ user.userprofile.avatar.url }}">
                 </div>
                 <div class="userinfo-basic">
-                    <span>{{ user.username }}  {{ user.email }}</span>
-                    <input type="text" {% if Bio %}value="{{ Bio }}" {% else %}value="Nothing here"{% endif %}>
+                    <div class="text-field">
+                        <span>{{ user.username }}</span>
+                        <span>{{ user.email }}</span>
+                    </div>
+                    <input type="text" {% if user.userprofile.bio %}value="{{ user.userprofile.bio }}" {% else %}value="Nothing here"{% endif %} readonly>
                 </div>
             </div>
             <div class="col-3 opt-field d-flex justify-content-end">
-                <a href="#" class="btn btn-light btn-sm">Edit</a>
-                <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Sign out</a>
+                <a href="{% url 'edit-userprofile' %}?user={{ user.id }}" class="btn btn-light btn-sm">Edit</a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Sign Out</a>
             </div>
         </div>
     </div>

@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit User Profile</title>
+  <link href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/edit_userprofile.css' %}" rel="stylesheet" />
+</head>
+
+<body>
+  <main>
+    <div class="container col-lg-8 col-md-10 col-sm-12 mx-auto">
+      <div class="main-container d-flex">
+        <div class="img-field col-2">
+          <div class="img-wrapper">
+            <img src="{{ user.userprofile.avatar.url }}" />
+          </div>
+        </div>
+        <div class="text-field col-10">
+          <div class="user-basicinfo">
+            <div class="username d-flex">
+              <p id="username-p">{{ user.username }}</p>
+              <form id="form-edit-username" method="post" action="{% url 'edit-userprofile-opt' 'edit_username' %}"
+                style="display: none;">
+                {% csrf_token %}
+                <div class="common-edit-field-style d-flex">
+                  <input type="text" id="username" name="username" value="{{ user.username }}" />
+                  <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                  <button type="button" id="btn-cancel-edit-username"
+                    class="btn btn-outline-light btn-sm">Cancel</button>
+                </div>
+              </form>
+              <button class="btn btn-edit-username" type="button">
+                <svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="Zi Zi--Edit" fill="currentColor">
+                  <path
+                    d="m7.841 20.043-4.328 1.18a.6.6 0 0 1-.737-.736l1.18-4.324a1.2 1.2 0 0 1 .314-.539l8.094-7.995a.9.9 0 0 1 1.268.003l2.736 2.736a.9.9 0 0 1 .004 1.268l-7.196 7.296-.802.802a1.2 1.2 0 0 1-.533.31ZM19.703 4.81l-.514-.513a2.542 2.542 0 0 0-3.595 0l-.999 1.067a.9.9 0 0 0 .02 1.252l2.77 2.768a.9.9 0 0 0 1.25.02l1.068-.999a2.542 2.542 0 0 0 0-3.594Z">
+                  </path>
+                </svg>Edit
+              </button>
+              <a href="{% url 'user-center' %}?username={{ user.username }}" class="ms-auto rtn-profile">Return to
+                Profile</a>
+            </div>
+            <div class="bio common-edit-box d-flex">
+              <p class="bio-p">Bio: {{ user.userprofile.bio }}</p>
+              <form id="form-edit-bio" class="common-edit-field-style" method="post" action="{% url 'edit-userprofile-opt' 'edit_bio' %}" style="display: none;">
+                {% csrf_token %}
+                <input type="text" id="bio" name="bio" value="{{ user.userprofile.bio }}" />
+                <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                <button type="button" id="btn-cancel-edit-bio" class="btn btn-outline-light btn-sm">Cancel</button>
+              </form>
+              <button class="btn btn-edit-bio" type="button">
+                <svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="Zi Zi--Edit" fill="currentColor">
+                  <path
+                    d="m7.841 20.043-4.328 1.18a.6.6 0 0 1-.737-.736l1.18-4.324a1.2 1.2 0 0 1 .314-.539l8.094-7.995a.9.9 0 0 1 1.268.003l2.736 2.736a.9.9 0 0 1 .004 1.268l-7.196 7.296-.802.802a1.2 1.2 0 0 1-.533.31ZM19.703 4.81l-.514-.513a2.542 2.542 0 0 0-3.595 0l-.999 1.067a.9.9 0 0 0 .02 1.252l2.77 2.768a.9.9 0 0 0 1.25.02l1.068-.999a2.542 2.542 0 0 0 0-3.594Z">
+                  </path>
+                </svg>Edit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script>
+  $(document).ready(function () {
+    $('.btn-edit-username').click(function () {
+      $('#username-p').hide();
+      $('#form-edit-username').css('display', 'flex');
+    })
+
+    $("#btn-cancel-edit-username").click(function (e) {
+      $("#username-p").show();
+      $('#form-edit-username').css('display', 'none');
+    });
+
+    $(".btn-edit-bio").click(function (e) { 
+      $('.bio-p').hide();
+      $('#form-edit-bio').css('display', 'flex');
+    });
+
+    $("#btn-cancel-edit-bio").click(function (e) { 
+      e.preventDefault();
+      $(".bio-p").show();
+      $('#form-edit-bio').css('display', 'none');
+    });
+  })
+</script>
+
+</html>

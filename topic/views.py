@@ -65,7 +65,6 @@ def topic_room(request):
     except:
         user_profile = None
     answers = AnswersRoom.objects.filter(topic_room=topic)
-    comments = CommentsRoom.objects.filter(answer_room__in=answers)
     ans_flag = True
     for ans in answers:
         if ans.owner == request.user:

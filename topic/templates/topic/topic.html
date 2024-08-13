@@ -7,9 +7,10 @@
     <title>Topics</title>
     <link rel="stylesheet" href="{% static 'topic/css/topic_style.css' %}" />
     <link rel="stylesheet" href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static '' %}">
   </head>
   <body>
-    <div class="container">
+    <div class="container col-lg-8 col-md-9">
       {% include 'topic/topic_navbar.html' %}
       <div class="topic-header">
         <div>
@@ -25,7 +26,7 @@
       {% for ans in answers %}
         <div class="answer-room">
           <div class="answer-user">
-            <img src="{{ ans.owner.userprofile.avatar.url }}" alt="Avatar" />
+            <a href="#"><img src="{{ ans.owner.userprofile.avatar.url }}" alt="Avatar" /></a>
             <div class="ans-user-textinfo">
               <p>{{ ans.owner.username }}</p>
               {% if ans.owner == topic.owner %}
@@ -147,6 +148,7 @@
                                             <p>{{ comment.comment_body }}</p>
                                           </div>
                                         </div>
+                                        <hr style="margin: 0;" />
                                         <div class="box-head">
                                           <p>{{ item.level2|length }} comments</p>
                                         </div>
@@ -170,7 +172,11 @@
                                           {% endfor %}
                                         </div>
                                       </div>
-                                      <button type="button" class="hide-comment-box" aria-label="Close"><svg width="24" height="24" viewBox="0 0 24 24" class="Zi Zi--Close css-k6n6wr" fill="rgb(255, 255, 255)"><path d="M5.619 4.381A.875.875 0 1 0 4.38 5.62L10.763 12 4.38 18.381A.875.875 0 1 0 5.62 19.62L12 13.237l6.381 6.382a.875.875 0 1 0 1.238-1.238L13.237 12l6.382-6.381A.875.875 0 0 0 18.38 4.38L12 10.763 5.619 4.38Z"></path></svg></button>
+                                      <button type="button" class="hide-comment-box" aria-label="Close">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" class="Zi Zi--Close css-k6n6wr" fill="rgb(255, 255, 255)">
+                                          <path d="M5.619 4.381A.875.875 0 1 0 4.38 5.62L10.763 12 4.38 18.381A.875.875 0 1 0 5.62 19.62L12 13.237l6.381 6.382a.875.875 0 1 0 1.238-1.238L13.237 12l6.382-6.381A.875.875 0 0 0 18.38 4.38L12 10.763 5.619 4.38Z"></path>
+                                        </svg>
+                                      </button>
                                     </div>
                                   </div>
                                 {% endif %}

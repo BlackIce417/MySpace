@@ -42,7 +42,7 @@
                 {% else %}
                     <div class="dropdown">
                         <a class="dropdown-toggle" href="#" id="userDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{% static 'image/default-avatar.png' %}" id="userAvatar">
+                            <img src="{{user.userprofile.avatar.url}}" id="userAvatar">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" style="min-width: auto" id="userDropdownMenu" aria-labelledby="userDropdownMenuLink">
                             <li><a class="dropdown-item" href="#">{{ request.user.username }}</a></li>

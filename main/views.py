@@ -7,9 +7,13 @@ from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from django.urls import reverse
+
+
 from .forms import *
 from .models import *
 from topic.models import Room
+from enum import Enum
 
 # Create your views here.
 
@@ -73,4 +77,31 @@ def user_center(request):
 	user = User.objects.get(username=username)
 	context = {"user": user}
 	return render(request, "main/user_center.html", context)
+
+@login_required(login_url='login')
+def edit_userprofile(request, opt=None):
+	class EditOption(Enum):
+		EDIT_USERNAME = "edit_username"
+		EDIT_BIO = "edit_bio"
+	if request.method == "POST":
+		try:
+			edit_option = EditOption(opt)
+		except ValueError as e:
+			return HttpResponse(f"{e}")
+		user = User.objects.get(id=request.user.id)
+		if edit_option == EditOption.EDIT_USERNAME:
+			username = request.POST.get("username")
+			user.username = username
+			user.save()
+		elif edit_option == EditOption.EDIT_BIO:
+			bio = request.POST.get("bio")
+			user.userprofile.bio = bio
+			user.userprofile.save()
+		return redirect(reverse("edit-userprofile") + "?user=" + str(request.user.id))
+	try: 
+		user = User.objects.get(id=request.GET.get("user"))
+	except Exception as e:
+		return HttpResponse(e)
+	context = {"user": user}
+	return render(request, "main/edit_userprofile.html", context)
 

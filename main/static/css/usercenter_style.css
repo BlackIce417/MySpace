@@ -10,7 +10,6 @@
 
 .userinfo {
     bottom: 10px;
-    height: 50px;
     display: flex;
 }
 
@@ -24,6 +23,7 @@
     height: 40px;
     object-fit: cover;
     border-radius: 50%;
+    margin: 10px 0;
 }
 
 .userinfo-basic {
@@ -32,10 +32,25 @@
     width: 100%;
 }
 
+.userinfo-basic .text-field span:first-child {
+    font-size: 25px;
+}
+
+.userinfo-basic .text-field span:nth-child(2) {
+    font-size: 12px;
+    color: darkgray;
+    box-sizing: border-box;
+    padding-left: 10px;
+    font-weight: lighter;
+}
+
 .userinfo-basic input {
-    max-width: 50%;
     border-radius: 5px;
     border: 1px solid #d0d7deb3;
+    font-weight: lighter;
+    width: 100%;
+    font-size: 15px;
+    box-sizing: border-box;
 }
 
 .userinfo-basic input:focus {

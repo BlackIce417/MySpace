@@ -1,0 +1,116 @@
+body html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+main {
+    background-color: #f4f4f4;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+}
+
+.main-container {
+    background-color: #ffffff;
+    position: relative;
+    top: 20px;
+}
+
+.main-container .img-field {
+    height: 100%;
+}
+
+.main-container .img-field .img-wrapper {
+    position: relative;
+    display: block;
+    top: -10px;
+    margin: 0 auto;
+    height: 64px;
+    width: 64px;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    border-radius: 2px;
+}
+
+.main-container .img-field .img-wrapper img {
+    height: 60px;
+    width: 60px;
+    display: block;
+    position: relative;
+    top: 2px;
+    margin: 0 auto;
+    border-radius: 2px;
+}
+
+.text-field .user-basicinfo {
+    padding: 5px 0 10px 10px;
+}
+
+.common-edit-box {
+    margin: 0;
+    height: 32px;
+}
+
+.text-field .user-basicinfo .username {
+    margin: 0;
+    height: 32px;
+}
+
+.text-field .user-basicinfo .username p {
+    font-size: 25px;
+    margin: 0;
+    text-align: center;
+    align-self: center;
+}
+
+/* .text-field .user-basicinfo .username input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+  } */
+
+.common-edit-field-style {
+    button {
+        margin: 0 0 0 5px;
+    }
+
+    button:nth-of-type(2) {
+        color: #000;
+    }
+}
+
+.text-field .user-basicinfo .username .username-edit-field button {
+    margin: 0 0 0 5px;
+}
+
+.text-field .user-basicinfo .username .username-edit-field button:nth-of-type(2) {
+    color: #000;
+}
+
+.text-field .user-basicinfo .username .btn-edit-username {
+    margin: auto 0;
+    margin-left: 10px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    padding: 2px 5px;
+}
+
+.text-field .user-basicinfo .username .rtn-profile {
+    text-decoration: none;
+    font-size: 14px;
+    margin: auto 5px;
+    color: #929aab;
+}
+
+.text-field .user-basicinfo .bio {
+    margin: 10px 0 0 0;
+}
+
+.text-field .user-basicinfo .bio .bio-p {
+    margin: 0;
+    text-align: center;
+    align-self: center;
+}
+
