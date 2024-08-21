@@ -45,7 +45,7 @@
                             <img src="{{user.userprofile.avatar.url}}" id="userAvatar">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" style="min-width: auto" id="userDropdownMenu" aria-labelledby="userDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">{{ request.user.username }}</a></li>
+                            <li><a class="dropdown-item" href="#">MessageBox</a></li>
                             <li><a class="dropdown-item" href="{% url 'user-center' %}?username={{ user.username }}">User Center</a></li>
                             <li><a class="dropdown-item" href="{% url 'logout' %}">Sign Out</a></li>
                         </ul>

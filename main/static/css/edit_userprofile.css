@@ -33,6 +33,21 @@ main {
     border-radius: 2px;
 }
 
+.main-container .img-field .img-wrapper .btn-change-avatar {
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: 2px;
+    z-index: 2;
+}
+
+.main-container .img-field .img-wrapper .btn-change-avatar:hover {
+    background-color: rgba(124, 125, 126, 0.6);
+    border-radius: 2px;
+}
+
 .main-container .img-field .img-wrapper img {
     height: 60px;
     width: 60px;
@@ -41,6 +56,7 @@ main {
     top: 2px;
     margin: 0 auto;
     border-radius: 2px;
+    z-index: 1;
 }
 
 .text-field .user-basicinfo {
@@ -88,7 +104,7 @@ main {
     color: #000;
 }
 
-.text-field .user-basicinfo .username .btn-edit-username {
+.commont-btn-edit {
     margin: auto 0;
     margin-left: 10px;
     height: 25px;

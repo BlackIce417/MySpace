@@ -1,16 +1,20 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/usercenter_style.css' %}">
 </head>
+
 <body>
-{% if user == request.user %}
+    {% comment %}
+    {% if user != request.user %}
+    {% endcomment %}
     <div class="container">
-        <div class="row userprofile-head">
+        <div class="row userprofile-head" style="margin-left: 0">
             <div class="col-9 userinfo">
                 <div class="userinfo-avator">
                     <img src="{{ user.userprofile.avatar.url }}">
@@ -19,21 +23,36 @@
                     <div class="text-field">
                         <span>{{ user.username }}</span>
                         <span>{{ user.email }}</span>
+                        <!-- <span>Last login at: {{ user.last_login }}</span> -->
                     </div>
-                    <input type="text" {% if user.userprofile.bio %}value="{{ user.userprofile.bio }}" {% else %}value="Nothing here"{% endif %} readonly>
+                    <input type="text" {% if user.userprofile.bio %}value="{{ user.userprofile.bio }}" {% else
+                        %}value="Nothing here" {% endif %} readonly>
                 </div>
             </div>
             <div class="col-3 opt-field d-flex justify-content-end">
-                <a href="{% url 'edit-userprofile' %}?user={{ user.id }}" class="btn btn-light btn-sm">Edit</a>
-                <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Sign Out</a>
+                {% if request.user == user %}
+                    <a href="{% url 'edit-userprofile' %}?user={{ user.id }}" class="btn btn-light btn-sm">Edit</a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Sign Out</a>
+                {% endif %}
             </div>
         </div>
+        <div class="navigate-bar d-flex">
+            <a href="#">Activity</a>
+            <a href="#">Topic</a>
+            <a href="#">Answer</a>
+            <a href="#">Intrest</a>
+        </div>
     </div>
-{% else %}
+    
+    {% comment %}
+    {% else %}
     <div class="alert alert-light warningbox">
         <p>You are not allow to here</p>
         <button class="btn btn-danger"><a href="{% url 'index' %}">I get it</a></button>
     </div>
-{% endif %}
+    {% endif %}
+    {% endcomment %}
+    
 </body>
+
 </html>

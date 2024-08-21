@@ -71,10 +71,12 @@ def user_logout(request):
 		return redirect("index")
 	return render(request, 'main/logout.html')
 
-@login_required(login_url='login')
 def user_center(request):
 	username = request.GET.get("username")
-	user = User.objects.get(username=username)
+	try: 
+		user = User.objects.get(username=username)
+	except:
+		return HttpResponse("User not found.")
 	context = {"user": user}
 	return render(request, "main/user_center.html", context)
 

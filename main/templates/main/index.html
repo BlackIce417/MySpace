@@ -22,7 +22,7 @@
                     <p>{{ i.description }}</p>
                     <small style="margin-right: 10px">{{ i.participants.count }} participants</small>
                     {% for p in i.participants.all|slice:":5" %}
-                        <small>{{ p.username }}</small>
+                        <a href="{% url 'user-center' %}?username={{ p.username }}" class="participants">@{{ p.username }}</a>
                     {% endfor %}
                     <hr>
                 </div>
@@ -81,6 +81,12 @@
 
         .main-topicblock {
             margin-top: 5px;
+        }
+
+        .main-topicblock .participants {
+            text-decoration: none;
+            /* color: #000000; */
+            font-size: 12px;
         }
 
     </style>

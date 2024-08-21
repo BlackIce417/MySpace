@@ -36,7 +36,7 @@
     font-size: 25px;
 }
 
-.userinfo-basic .text-field span:nth-child(2) {
+.userinfo-basic .text-field span:nth-child(2), span:nth-child(3) {
     font-size: 12px;
     color: darkgray;
     box-sizing: border-box;
@@ -76,4 +76,16 @@
 .warningbox a{
     text-decoration: none;
     color: white;
+}
+
+.navigate-bar {
+    border-radius: 1px solid #d0d7deb3;
+    height: 30px;
+}
+
+.navigate-bar a {
+    text-decoration: none;
+    padding: 0 10px;
+    color: #676a6eb3;
+    font-size: 12px;
 }
