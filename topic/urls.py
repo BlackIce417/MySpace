@@ -10,4 +10,6 @@ urlpatterns = [
 	path('delete-comment/<int:comment_id>', views.delete_comment, name='delete_comment'),
 	path('comment-reply/<int:comment_id>', views.reply_to, name='reply_comment'),
 	path('comment-reply/<int:father_comment_id>/<int:comment_id>', views.reply_to, name='reply_under_father_comment'),
+    path('follow-topic/<int:topic_id>', views.follow_topic, name='follow_topic'),
+    path('unfollow-topic/<int:topic_id>', views.unfollow_topic, name='unfollow_topic'),
 ]

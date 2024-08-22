@@ -49,7 +49,6 @@ def formate_comments_info(
         else:
             comment_info["comments"]["level1"] = []
         comments_info_list.append(comment_info)
-    print(comments_info_list)
     return comments_info_list
 
 
@@ -64,6 +63,8 @@ def topic_room(request):
         user_profile = UserProfile.objects.get(user=topic.owner)
     except:
         user_profile = None
+    is_followed = TopicFollow.objects.filter(user=request.user.userprofile, topic_room=topic).exists()
+    print(is_followed)
     answers = AnswersRoom.objects.filter(topic_room=topic)
     ans_flag = True
     for ans in answers:
@@ -77,6 +78,7 @@ def topic_room(request):
         "answers": answers,
         "comments": comments_info,
         "ans_flag": ans_flag,
+        "is_followed": is_followed,
     }
     return render(request, "topic/topic.html", context)
 
@@ -204,3 +206,39 @@ def reply_to(request, comment_id, father_comment_id=None):
         return redirect(
             reverse("topic") + "?topic_id=" + str(answer_room.topic_room.id)
         )
+    
+login_required(login_url="login")
+def follow_topic(request, topic_id):
+    if request.method == "GET":
+        try: 
+            user_profile = UserProfile.objects.get(user=request.user)
+        except:
+            return HttpResponse(f"Cannot find user {request.user}")
+        try:
+            topic = Room.objects.get(id=topic_id)
+            topic_follow, created = TopicFollow.objects.get_or_create(user=user_profile, topic_room=topic)
+            if created:
+                messages.success(request, "You are now following this topic")
+            else:
+                messages.success(request, "You are already following this topic")
+            return redirect(reverse("topic") + "?topic_id=" + str(topic_id))
+        except:
+            return HttpResponse(f"Cannot find topic {topic_id}")
+        
+login_required(login_url="login")
+def unfollow_topic(request, topic_id):
+    if request.method == "GET":
+        try: 
+            user_profile = UserProfile.objects.get(user=request.user)
+        except:
+            return HttpResponse(f"Cannot find user {request.user}")
+        try:
+            topic = Room.objects.get(id=topic_id)
+            topic_follow = TopicFollow.objects.filter(user=user_profile, topic_room=topic)
+            if topic_follow.exists():
+                topic_follow.delete()
+            else:
+                messages.info(request, "You are not following this topic")
+            return redirect(reverse("topic") + "?topic_id=" + str(topic_id))
+        except:
+            return HttpResponse(f"Cannot find topic {topic_id}")

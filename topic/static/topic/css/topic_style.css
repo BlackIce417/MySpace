@@ -16,6 +16,11 @@
     border-radius: 50%;
 }
 
+.topic-header .topic-user-info a {
+    text-decoration: none;
+    color: #000;
+}
+
 .answer-room {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -36,10 +41,12 @@
     margin-left: 10px;
 }
 
-.answer-user .ans-user-textinfo p {
+.answer-user .ans-user-textinfo a {
     font-weight: bold;
     font-size: 15px;
     margin-bottom: 0;
+    text-decoration: none;
+    color: #000;
 }
 
 .hint {

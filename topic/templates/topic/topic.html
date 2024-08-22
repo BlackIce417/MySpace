@@ -19,7 +19,7 @@
         </div>
         <div class="topic-user-info">
           <img src="{{ user_profile.avatar.url }}" alt="{{ user_profile.user }}" />
-          <span>{{ user_profile.user.username }}</span>
+          <a href="{% url 'user-center' %}?username={{ user_profile.user.username }}">{{ user_profile.user.username }}</a>
         </div>
       </div>
       <hr style="margin: 0;" />
@@ -28,7 +28,7 @@
           <div class="answer-user">
             <a href="#"><img src="{{ ans.owner.userprofile.avatar.url }}" alt="Avatar" /></a>
             <div class="ans-user-textinfo">
-              <p>{{ ans.owner.username }}</p>
+              <a href="{% url 'user-center' %}?username={{ ans.owner.username }}">{{ ans.owner.username }}</a>
               {% if ans.owner == topic.owner %}
                 <small class="hint">Question Author</small>
               {% endif %}

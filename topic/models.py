@@ -71,3 +71,16 @@ class CommentsRoom(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+
+class TopicFollow(models.Model):
+    user = models.ForeignKey("main.UserProfile", on_delete=models.CASCADE)
+    topic_room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    follow_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.room}"
+    
+    class Meta:
+        unique_together = ('user', 'topic_room')
+        ordering = ["-follow_at"]
