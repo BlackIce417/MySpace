@@ -1,0 +1,124 @@
+<div class="user-center-answer">
+  {% for answer in answers %}
+    <div class="answer-blocks">
+      <h4 class="topic-title"><a href="#">{{ answer.topic_room.title }}</a></h4>
+      <a href="{% url 'user-center' %}?username={{ user.username }}" class="answerer-info">
+        <img src="{{ answer.owner.userprofile.avatar.url }}" alt="{{ answer.owner.username }}" class="answer-avatar" />
+        <span>{{ answer.owner.username }}</span>
+      </a>
+      <p class="answer-body">{{ answer.answer_body }}</p>
+      <small class="hint" style="margin: 0;">{{ answer.created_at }}</small>
+      <div class="bottom-bar d-flex">
+        <small>{{ answer.comment_count }} Comments</small>
+        <button class="btn-settting" id="btn-setting-{{ answer.id }}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="d-inline-flex align-items-center">
+            &ZeroWidthSpace;<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.809 2.17a2.415 2.415 0 0 1 2.382 0l6.842 3.878a2.415 2.415 0 0 1 1.224 2.1v7.703c0 .87-.468 1.672-1.224 2.101L13.19 21.83a2.415 2.415 0 0 1-2.381 0l-6.842-3.878a2.415 2.415 0 0 1-1.224-2.1V8.148c0-.87.467-1.672 1.224-2.101l6.842-3.878Zm-2.633 9.82a3.858 3.858 0 1 1 7.716 0 3.858 3.858 0 0 1-7.716 0Zm3.858-2.357a2.358 2.358 0 1 0 0 4.716 2.358 2.358 0 0 0 0-4.716Z" clip-rule="evenodd"></path>
+            </svg>
+          </span>
+          Setting
+        </button>
+        <ul class="dropdown-menu setting-dropdown" aria-labelledby="btn-setting-{{ answer.id }}">
+          <li>
+            <a href="{% url 'topic:answer' %}?topic_id={{ answer.topic_room.id }}">Edit</a>
+          </li>
+          <li>
+            <a href="{% url 'topic:delete_answer' answer.id %}" class="btn-delete-answer">Delete</a>
+          </li>
+        </ul>
+        <dialog id="hint-delete-ans">
+          <h5>Are you sure to delete this answer ?</h5>
+          <div class="opt-field">
+            <button class="btn btn-light btn-sm" id="no">Not Sure</button>
+            <button class="btn btn-danger btn-sm" id="yes">Yes</button>
+          </div>
+        </dialog>
+      </div>
+    </div>
+    <hr class="common-hr-style" style="width: calc(100% - 20px);" />
+  {% endfor %}
+</div>
+
+<style>
+  .user-center-answer .answer-blocks {
+    padding: 0 0 0 10px;
+  }
+  
+  .user-center-answer .answer-blocks .topic-title {
+    margin: 20px 0 10px 0;
+  }
+  
+  .user-center-answer .answer-blocks .topic-title a {
+    text-decoration: none;
+    color: #000000;
+  }
+  
+  .user-center-answer .answerer-info {
+    text-decoration: none;
+  }
+  
+  .user-center-answer .answerer-info img {
+    height: 38px;
+    width: 38px;
+    border-radius: 2px;
+  }
+  
+  .user-center-answer .answerer-info span {
+    color: #000000;
+  }
+  
+  .user-center-answer {
+    .answer-blocks {
+      .answer-body {
+        margin: 20px 0 20px 0;
+      }
+      .bottom-bar {
+        margin: 20px 0 10px 0;
+        color: #929aab;
+        align-items: center;
+  
+        .btn-settting {
+          background-color: transparent;
+          border: none;
+          color: #929aab;
+        }
+  
+        .setting-dropdown {
+          width: 50px;
+        }
+  
+        .setting-dropdown li {
+          padding: 0 0 0 10px;
+        }
+  
+        .setting-dropdown li a {
+          text-decoration: none;
+          color: #000000;
+        }
+      }
+    }
+  }
+</style>
+
+<script>
+  $(document).ready(function () {
+    $('.btn-delete-answer').click(function (e) {
+      e.preventDefault()
+      var url = $(this).attr('href')
+      $('#hint-delete-ans')[0].showModal()
+  
+      $('#yes')
+        .off('click')
+        .on('click', function () {
+          $('#hint-delete-ans')[0].close()
+          window.location.href = url
+        })
+  
+      $('#no')
+        .off('click')
+        .on('click', function () {
+          $('#hint-delete-ans')[0].close()
+        })
+    })
+  })
+</script>

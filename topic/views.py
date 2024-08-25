@@ -13,9 +13,7 @@ from .models import *
 # Create your views here.
 
 
-def formate_comments_info(
-    answer: QuerySet[AnswersRoom]
-):
+def formate_comments_info(answer: QuerySet[AnswersRoom]):
     comment_info_template = {
         "answer": int,
         "comments": {
@@ -63,15 +61,21 @@ def topic_room(request):
         user_profile = UserProfile.objects.get(user=topic.owner)
     except:
         user_profile = None
-    is_followed = TopicFollow.objects.filter(user=request.user.userprofile, topic_room=topic).exists()
-    print(is_followed)
+    try:
+        is_followed = TopicFollow.objects.filter(
+            user=request.user.userprofile, topic_room=topic
+        ).exists()
+    except:
+        is_followed = False
     answers = AnswersRoom.objects.filter(topic_room=topic)
     ans_flag = True
     for ans in answers:
         if ans.owner == request.user:
             ans_flag = False
             break
-    comments_info = formate_comments_info(answers,)
+    comments_info = formate_comments_info(
+        answers,
+    )
     context = {
         "topic": topic,
         "user_profile": user_profile,
@@ -121,10 +125,10 @@ def answer_question(request):
 
 
 def delete_answer(request, answer_id):
-    if request.method == "POST":
-        answer = AnswersRoom.objects.get(id=answer_id)
-        answer.delete()
-        return redirect(reverse("topic") + "?topic_id=" + str(answer.topic_room.id))
+    print(f"request path: {request.META.get('HTTP_REFERER')}")
+    answer = AnswersRoom.objects.get(id=answer_id)
+    answer.delete()
+    return redirect(reverse("topic:topic") + "?topic_id=" + str(answer.topic_room.id))
 
 
 @login_required(login_url="login")
@@ -138,7 +142,9 @@ def quick_add_comment(request, answer_id):
                 comment_body=request.POST.get("comment"),
             )
             comment.save()
-            return redirect(reverse("topic") + "?topic_id=" + str(answer.topic_room.id))
+            return redirect(
+                reverse("topic:topic") + "?topic_id=" + str(answer.topic_room.id)
+            )
         except Exception as e:
             return HttpResponse(f"Error: {e}")
 
@@ -149,7 +155,9 @@ def delete_comment(request, comment_id):
         comment = CommentsRoom.objects.get(id=comment_id)
         comment.delete()
         return redirect(
-            reverse("topic") + "?topic_id=" + str(comment.answer_room.topic_room.id)
+            reverse("topic:topic")
+            + "?topic_id="
+            + str(comment.answer_room.topic_room.id)
         )
     except Exception as e:
         return HttpResponse(f"{e}")
@@ -204,19 +212,22 @@ def reply_to(request, comment_id, father_comment_id=None):
         comment.save()
         messages.success(request, "Reply Success")
         return redirect(
-            reverse("topic") + "?topic_id=" + str(answer_room.topic_room.id)
+            reverse("topic:topic") + "?topic_id=" + str(answer_room.topic_room.id)
         )
-    
-login_required(login_url="login")
+
+
+@login_required(login_url="login")
 def follow_topic(request, topic_id):
     if request.method == "GET":
-        try: 
+        try:
             user_profile = UserProfile.objects.get(user=request.user)
         except:
             return HttpResponse(f"Cannot find user {request.user}")
         try:
             topic = Room.objects.get(id=topic_id)
-            topic_follow, created = TopicFollow.objects.get_or_create(user=user_profile, topic_room=topic)
+            topic_follow, created = TopicFollow.objects.get_or_create(
+                user=user_profile, topic_room=topic
+            )
             if created:
                 messages.success(request, "You are now following this topic")
             else:
@@ -224,21 +235,24 @@ def follow_topic(request, topic_id):
             return redirect(reverse("topic") + "?topic_id=" + str(topic_id))
         except:
             return HttpResponse(f"Cannot find topic {topic_id}")
-        
-login_required(login_url="login")
+
+
+@login_required(login_url="login")
 def unfollow_topic(request, topic_id):
     if request.method == "GET":
-        try: 
+        try:
             user_profile = UserProfile.objects.get(user=request.user)
         except:
             return HttpResponse(f"Cannot find user {request.user}")
         try:
             topic = Room.objects.get(id=topic_id)
-            topic_follow = TopicFollow.objects.filter(user=user_profile, topic_room=topic)
+            topic_follow = TopicFollow.objects.filter(
+                user=user_profile, topic_room=topic
+            )
             if topic_follow.exists():
                 topic_follow.delete()
             else:
                 messages.info(request, "You are not following this topic")
-            return redirect(reverse("topic") + "?topic_id=" + str(topic_id))
+            return redirect(reverse("topic:topic") + "?topic_id=" + str(topic_id))
         except:
             return HttpResponse(f"Cannot find topic {topic_id}")

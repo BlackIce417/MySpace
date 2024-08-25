@@ -1,0 +1,34 @@
+<div class="user-center-topic">
+  {% for item in topics %}
+    {% with topic=item.topic %}
+      <div class="topic-info">
+        <h4 class="topic-title"><a href="{% url 'topic:topic' %}?topic_id={{ topic.id }}">{{ topic.title }}</a></h4>
+        <small class="topic-time-hint">{{ topic.created_at }}</small>
+        <small class="topic-answers-hint">{{ topic.participants.count }} Answers</small>
+        <small class="topic-followed-user-count">{{ item.followed_count }} Followers</small>
+      </div>
+      <hr class="common-hr-style" style="width: calc(100% - 20px);" />
+    {% endwith %}
+  {% endfor %}
+</div>
+
+<style>
+  .topic-info {
+    padding: 20px 0 20px 10px;
+  }
+  
+  .topic-info .topic-title a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #000000;
+  }
+  
+  .topic-info small {
+    color: #676a6eb3;
+    margin-bottom: 10px;
+  }
+  
+  .topic-info small:nth-of-type(2), .topic-followed-user-count{
+    margin: 0 0 0 10px;
+  }
+</style>

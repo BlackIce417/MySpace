@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     {% include 'topic/topic_navbar.html' %}
-    <form method="post" action="{% url 'answer' %}?topic_id={{ topic.id }}">
+    <form method="post" action="{% url 'topic:answer' %}?topic_id={{ topic.id }}">
         {% include 'topic/answer_layout.html' %}
     </form>
 </div>

@@ -1,58 +1,81 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>User Center</title>
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/usercenter_style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/common_style.css' %}" />
 
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/usercenter_style.css' %}">
-</head>
+    <script src="{% static 'js\jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.min.js' %}"></script>
+  </head>
 
-<body>
+  <body>
     {% comment %}
     {% if user != request.user %}
-    {% endcomment %}
-    <div class="container">
+      {% endcomment %}
+      <div class="container">
         <div class="row userprofile-head" style="margin-left: 0">
-            <div class="col-9 userinfo">
-                <div class="userinfo-avator">
-                    <img src="{{ user.userprofile.avatar.url }}">
-                </div>
-                <div class="userinfo-basic">
-                    <div class="text-field">
-                        <span>{{ user.username }}</span>
-                        <span>{{ user.email }}</span>
-                        <!-- <span>Last login at: {{ user.last_login }}</span> -->
-                    </div>
-                    <input type="text" {% if user.userprofile.bio %}value="{{ user.userprofile.bio }}" {% else
-                        %}value="Nothing here" {% endif %} readonly>
-                </div>
+          <div class="col-9 userinfo">
+            <div class="userinfo-avator">
+              <img src="{{ user.userprofile.avatar.url }}" alt="Avatar" />
             </div>
-            <div class="col-3 opt-field d-flex justify-content-end">
-                {% if request.user == user %}
-                    <a href="{% url 'edit-userprofile' %}?user={{ user.id }}" class="btn btn-light btn-sm">Edit</a>
-                    <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Sign Out</a>
-                {% endif %}
+            <div class="userinfo-basic">
+              <div class="text-field">
+                <span>{{ user.username }}</span>
+                <span>{{ user.email }}</span>
+                <!-- <span>Last login at: {{ user.last_login }}</span> -->
+              </div>
+              <input type="text" value="{{ user.userprofile.bio|default:'Nothing here' }}" readonly />
             </div>
+          </div>
+          <div class="col-3 opt-field d-flex justify-content-end">
+            {% if request.user == user %}
+              <a href="{% url 'edit-userprofile' %}?user={{ user.id }}" class="btn btn-light btn-sm">Edit</a>
+              <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Sign Out</a>
+            {% endif %}
+          </div>
         </div>
-        <div class="navigate-bar d-flex">
-            <a href="#">Activity</a>
-            <a href="#">Topic</a>
-            <a href="#">Answer</a>
+        <div class="content-card">
+          <div class="navigate-bar d-flex">
+            <a href="{% url 'user-center' %}?username={{ user.username }}">All</a>
+            <a href="{% url 'user-center-opt' 'topic' %}?username={{ user.username }}">Topic</a>
+            <a href="{% url 'user-center-opt' 'answer' %}?username={{ user.username }}">Answer</a>
             <a href="#">Intrest</a>
+          </div>
+          <div class="usercenter-content">
+            <h5 class="content-hint">
+              <span>
+                {% if opt == 'all' %}
+                  All Activities
+                {% elif opt == 'topic' %}
+                  Topics
+                {% elif opt == 'answer' %}
+                  Answers
+                {% endif %}
+              </span>
+            </h5>
+            <hr class="common-hr-style" style="width: calc(100% - 20px)" />
+            {% if opt == 'all' %}
+              Waiting for developing...
+            {% elif opt == 'topic' %}
+              {% include 'main/user_center_topic.html' %}
+            {% elif opt == 'answer' %}
+              {% include 'main/user_center_answer.html' %}
+            {% endif %}
+          </div>
         </div>
-    </div>
-    
-    {% comment %}
+      </div>
+
+      {% comment %}
     {% else %}
-    <div class="alert alert-light warningbox">
+      <div class="alert alert-light warningbox">
         <p>You are not allow to here</p>
         <button class="btn btn-danger"><a href="{% url 'index' %}">I get it</a></button>
-    </div>
+      </div>
     {% endif %}
     {% endcomment %}
-    
-</body>
-
+  </body>
 </html>

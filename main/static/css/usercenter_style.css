@@ -1,3 +1,7 @@
+body {
+    background: #f4f6f9;
+}
+
 .userprofile-head {
     width: 100%;
     height: 80px;
@@ -6,6 +10,7 @@
     justify-content: space-between;
     align-items: center;
     border: 1px solid #d0d7deb3;
+    background-color: #fff;
 }
 
 .userinfo {
@@ -78,9 +83,17 @@
     color: white;
 }
 
+.content-card {
+    background-color: #fff;
+    margin: 15px 0 0 0;
+    padding: 0 0 20px 0;
+}
+
 .navigate-bar {
-    border-radius: 1px solid #d0d7deb3;
+    border-bottom: 1px solid #d0d7deb3;
     height: 30px;
+    width: 100%;
+    align-items: center;
 }
 
 .navigate-bar a {
@@ -88,4 +101,21 @@
     padding: 0 10px;
     color: #676a6eb3;
     font-size: 12px;
+    font-weight: bold;
 }
+
+.usercenter-content {
+    margin: 10px 0;
+}
+
+.usercenter-content .content-hint {
+    margin: 0;
+    padding: 0 10px;
+    font-size: 15px;
+    font-weight: bold;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+

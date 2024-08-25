@@ -1,0 +1,30 @@
+.common-hr-style {
+    margin: 0 auto;
+    width: 96%;
+}
+
+.hint {
+    margin-left: 10px;
+    color: darkgray;
+    /* border: 1px solid #d0d7deb3; */
+    padding: 3px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: lighter;
+}
+
+#hint-delete-ans {
+    border: 1px solid #e8eced;
+    background: #efe2f3;
+    margin: auto;
+
+}
+
+#hint-delete-ans .opt-field {
+    display: flex;
+    justify-content: center;
+}
+
+#hint-delete-ans .opt-field button:nth-child(2) {
+    margin-left: 10px;
+}

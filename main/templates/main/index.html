@@ -18,7 +18,7 @@
         <div class="main-content">
             {% for i in rooms %}
                 <div class="main-topicblock">
-                    <h5><a href="{% url 'topic' %}?topic_id={{ i.id }}">{{ i.title }}</a></h5>
+                    <h5><a href="{% url 'topic:topic' %}?topic_id={{ i.id }}">{{ i.title }}</a></h5>
                     <p>{{ i.description }}</p>
                     <small style="margin-right: 10px">{{ i.participants.count }} participants</small>
                     {% for p in i.participants.all|slice:":5" %}

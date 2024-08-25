@@ -10,14 +10,14 @@
   <div class="h-btngroup">
     {% if request.user.is_authenticated %}
       {% if ans_flag %}
-        <a href="{% url 'answer' %}?topic_id={{ topic.id }}" class="btn btn-light btn-answer" id="btn-follow">Answer</a>
+        <a href="{% url 'topic:answer' %}?topic_id={{ topic.id }}" class="btn btn-light btn-answer" id="btn-follow">Answer</a>
       {% endif %}
       {% if not is_followed %}
-        <a href="{% url 'follow_topic' topic.id %}" class="btn btn-primary btn-follow">Follow</a>
+        <a href="{% url 'topic:follow_topic' topic.id %}" class="btn btn-primary btn-follow">Follow</a>
       {% else %}
-        <a href="{% url 'unfollow_topic' topic.id %}" class="btn btn-outline-primary btn-follow" disabled>Followed</a>
+        <a href="{% url 'topic:unfollow_topic' topic.id %}" class="btn btn-outline-primary btn-follow">Followed</a>
       {% endif %}
-        <a href="{% url 'user-center' %}?username={{ request.user.username }}"><img src="{{ request.user.userprofile.avatar.url }}" alt="{{ user_profile.user }}" /></a>
+        <a href="{% url 'user-center' %}?username={{ request.user.username }}" target="_blank"><img src="{{ request.user.userprofile.avatar.url }}" alt="{{ user_profile.user }}" /></a>
     {% else %}
       <p class="hint-nologin">You havn't sign in yet</p>
       <a href="{% url 'login' %}" class="to-signin">Sign In</a>

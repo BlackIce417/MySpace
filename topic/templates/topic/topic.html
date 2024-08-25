@@ -7,6 +7,7 @@
     <title>Topics</title>
     <link rel="stylesheet" href="{% static 'topic/css/topic_style.css' %}" />
     <link rel="stylesheet" href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/common_style.css' %}">
   </head>
 
   <body>
@@ -19,7 +20,7 @@
         </div>
         <div class="topic-user-info">
           <img src="{{ user_profile.avatar.url }}" alt="{{ user_profile.user }}" />
-          <a href="{% url 'user-center' %}?username={{ user_profile.user.username }}">{{ user_profile.user.username }}</a>
+          <a href="{% url 'user-center' %}?username={{ user_profile.user.username }}" target="_blank">{{ user_profile.user.username }}</a>
         </div>
       </div>
       <hr style="margin: 0;" />
@@ -55,13 +56,13 @@
             </div>
             {% if request.user == ans.owner %}
               <div class="d-flex justify-content-end">
-                <a href="{% url 'answer' %}?topic_id={{ topic.id }}" type="button" class="btn btn-primary btn-sm btn-edit-ans">Edit</a>
+                <a href="{% url 'topic:answer' %}?topic_id={{ topic.id }}" type="button" class="btn btn-primary btn-sm btn-edit-ans">Edit</a>
                 <button class="btn btn-danger btn-sm btn-delete-ans" data-answer-id="{{ ans.id }}" id="delete-ans">Delete</button>
               </div>
             {% endif %}
           </div>
           <div class="comment-box" id="comment-box-{{ forloop.counter0 }}">
-            <form method="post" action="{% url 'quick_add_comment' 0 %}" class="form-quick-add-comment">
+            <form method="post" action="{% url 'topic:quick_add_comment' 0 %}" class="form-quick-add-comment">
               {% csrf_token %}
               <div class="comment-input-field">
                 <img src="{{ request.user.userprofile.avatar.url }}" style="height: 40px;width: 40px; margin: 0 auto" />
@@ -97,8 +98,8 @@
                           <div class="comment-bottom">
                             <small class="hint">{{ comment.created_at|custom_timesince_or_date }}</small>
                             <div class="comment-bottom-opt-field">
-                              <a href="{% url 'reply_comment' comment.id %}" class="btn btn-outline-primary btn-sm">Reply</a>
-                              <form method="post" action="{% url 'delete_comment' comment.id %}">
+                              <a href="{% url 'topic:reply_comment' comment.id %}" class="btn btn-outline-primary btn-sm">Reply</a>
+                              <form method="post" action="{% url 'topic:delete_comment' comment.id %}">
                                 {% csrf_token %}
                                 <button class="btn btn-danger btn-sm">Delete</button>
                               </form>
@@ -121,8 +122,8 @@
                                     <div class="replied-comment-bottom">
                                       <small class="hint" style="margin-left: 40px">{{ replied_comment.created_at|custom_timesince_or_date }}</small>
                                       <div class="replied-comment-bottom-opt-field">
-                                        <a href="{% url 'reply_under_father_comment' replied_comment.id replied_comment.father_comment_id %}" class="btn btn-outline-primary btn-sm" target="_blank">Reply</a>
-                                        <form method="post" action="{% url 'delete_comment' replied_comment.id %}">
+                                        <a href="{% url 'topic:reply_under_father_comment' replied_comment.id replied_comment.father_comment_id %}" class="btn btn-outline-primary btn-sm" target="_blank">Reply</a>
+                                        <form method="post" action="{% url 'topic:delete_comment' replied_comment.id %}">
                                           {% csrf_token %}
                                           {% if request.user == replied_comment.user %}
                                             <button class="btn btn-danger btn-sm">Delete</button>
@@ -194,7 +195,7 @@
           <hr />
         </div>
       {% endfor %}
-      <form method="post" action="{% url 'delete_answer' 0 %}" id="form-delete-answer">
+      <form method="post" action="{% url 'topic:delete_answer' 0 %}" id="form-delete-answer">
         {% csrf_token %}
         <dialog id="hint-delete-ans">
           <h5>Are you sure to delete this answer ?</h5>
@@ -214,14 +215,14 @@
     
       $('#delete-ans').click(function () {
         let ans_id = $(this).data('answer-id')
-        let action = "{%  url 'delete_answer' 0 %}".replace('0', ans_id)
+        let action = "{%  url 'topic:delete_answer' 0 %}".replace('0', ans_id)
         $('#form-delete-answer').attr('action', action)
         $('#hint-delete-ans')[0].showModal()
       })
     
       $('.btn-quick-add-comment').click(function () {
         let ans_id = $(this).data('answer-id')
-        let action = "{% url 'quick_add_comment' 0 %}".replace('0', ans_id)
+        let action = "{% url 'topic:quick_add_comment' 0 %}".replace('0', ans_id)
     
         $('.form-quick-add-comment').attr('action', action)
       })

@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 
+app_name = 'topic'
+
 urlpatterns = [
 	path('', views.topic_room, name='topic'),
 	path('answer/', views.answer_question, name='answer'),
