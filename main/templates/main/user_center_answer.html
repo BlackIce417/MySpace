@@ -1,7 +1,7 @@
 <div class="user-center-answer">
   {% for answer in answers %}
     <div class="answer-blocks">
-      <h4 class="topic-title"><a href="#">{{ answer.topic_room.title }}</a></h4>
+      <h4 class="topic-title"><a href="{% url 'topic:topic' %}?topic_id={{ answer.topic_room.id }}">{{ answer.topic_room.title }}</a></h4>
       <a href="{% url 'user-center' %}?username={{ user.username }}" class="answerer-info">
         <img src="{{ answer.owner.userprofile.avatar.url }}" alt="{{ answer.owner.username }}" class="answer-avatar" />
         <span>{{ answer.owner.username }}</span>
@@ -9,7 +9,14 @@
       <p class="answer-body">{{ answer.answer_body }}</p>
       <small class="hint" style="margin: 0;">{{ answer.created_at }}</small>
       <div class="bottom-bar d-flex">
-        <small>{{ answer.comment_count }} Comments</small>
+        <button class="btn-comments" type="button">
+          <span class="d-inline-flex align-items-center">
+            &ZeroWidthSpace;<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="Zi Zi--Comment Button-zi t2ntD6J1DemdOdvh5FB4" fill="currentColor">
+              <path fill-rule="evenodd" d="M12 2.75a9.25 9.25 0 1 0 4.737 17.197l2.643.817a1 1 0 0 0 1.25-1.25l-.8-2.588A9.25 9.25 0 0 0 12 2.75Z" clip-rule="evenodd"></path>
+            </svg>
+          </span>
+          {{ answer.comment_count }} Comments
+        </button>
         <button class="btn-settting" id="btn-setting-{{ answer.id }}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           <span class="d-inline-flex align-items-center">
             &ZeroWidthSpace;<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="currentColor">
@@ -76,6 +83,13 @@
         margin: 20px 0 10px 0;
         color: #929aab;
         align-items: center;
+
+        .btn-comments {
+          background-color: transparent;
+          border: none;
+          color: #929aab;
+          padding: 1px 6px 1px 0;
+        }
   
         .btn-settting {
           background-color: transparent;

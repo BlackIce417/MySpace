@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "mssql",
 
+
     "MySpace",
     "main.apps.MainConfig",
     "topic.apps.TopicConfig",

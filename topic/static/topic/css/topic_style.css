@@ -1,3 +1,8 @@
+body {
+    background-color: #f4f6f9 !important;
+    height: 100vh;
+}
+
 .topic-header {
     display: flex;
     justify-content: space-between;
@@ -72,6 +77,9 @@
 
 .ans-bottombar .common-field .comment-field {
     margin-left: 5px;
+    color: #929aab;
+    background-color: transparent;
+    padding: 3px 5px;
 }
 
 .ans-bottombar .common-field .comment-field:hover {
@@ -231,7 +239,7 @@
     font-size: 15px;
     text-align: center;
     padding: 5px;
-    border-radius: 2px;
+    border-radius: 10px;
     color: rgb(132, 145, 165);
     border: none;
 }

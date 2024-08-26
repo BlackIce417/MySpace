@@ -7,11 +7,11 @@
     <title>Topics</title>
     <link rel="stylesheet" href="{% static 'topic/css/topic_style.css' %}" />
     <link rel="stylesheet" href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/common_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/common_style.css' %}" />
   </head>
 
   <body>
-    <div class="container col-lg-8 col-md-9">
+    <div class="container col-lg-8 col-md-9" style="background-color: #ffffff;">
       {% include 'topic/topic_navbar.html' %}
       <div class="topic-header">
         <div>
@@ -29,7 +29,7 @@
           <div class="answer-user">
             <a href="#"><img src="{{ ans.owner.userprofile.avatar.url }}" alt="Avatar" /></a>
             <div class="ans-user-textinfo">
-              <a href="{% url 'user-center' %}?username={{ ans.owner.username }}">{{ ans.owner.username }}</a>
+              <a href="{% url 'user-center' %}?username={{ ans.owner.username }}" target="_blank">{{ ans.owner.username }}</a>
               {% if ans.owner == topic.owner %}
                 <small class="hint">Question Author</small>
               {% endif %}
@@ -45,13 +45,12 @@
             <div class="common-field" id="common-field">
               <small class="hint" style="margin-left: 0">{{ ans.created_at|custom_timesince_or_date }}</small>
               <div class="comment-field" id="comment-field" data-index="{{ forloop.counter0 }}">
-                <svg t="1720718221228" class="icon-comment" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4280" width="30" height="30">
-                  <path d="M139.4 815.8c-8.3 0-15.8-2.3-22.1-8.3-16.6-15.6-8.5-40.4 6.1-85.2 3.6-11.1 7-20.8 7.7-25.6l-0.1-525c0-36.2 30.6-65.7 68.2-65.7h688.7c37.6 0 68.2 29.4 68.2 65.7V733c0 36.2-30.6 65.7-68.2 65.7H199.1c-2.5 0.6-9.2 3.3-16.4 6-16 5.7-30.7 11.1-43.3 11.1z m59.7-659c-9.6 0-17.4 6.7-17.4 14.8v527c0 7.9-2.9 17.2-10.1 39.3-1.7 5.2-3.9 11.9-6 18.8 15.5-5.7 24.8-8.9 33.5-8.9h688.7c9.6 0 17.4-6.7 17.4-14.8V171.6c0-8.2-7.8-14.8-17.4-14.8H199.1z" fill="#bfbfbf" p-id="4281"></path>
-                  <path d="M345.7 454.2m-31.1 0a31.1 31.1 0 1 0 62.2 0 31.1 31.1 0 1 0-62.2 0Z" fill="#bfbfbf" p-id="4282"></path>
-                  <path d="M556.8 454.2m-31.1 0a31.1 31.1 0 1 0 62.2 0 31.1 31.1 0 1 0-62.2 0Z" fill="#bfbfbf" p-id="4283"></path>
-                  <path d="M746.3 454.2m-31.1 0a31.1 31.1 0 1 0 62.2 0 31.1 31.1 0 1 0-62.2 0Z" fill="#bfbfbf" p-id="4284"></path>
-                </svg>
-                <small id="comment-count-hint">{{ ans.comment_count }} comments</small>
+                <span class="d-inline-flex align-items-center">
+                  &ZeroWidthSpace;<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="Zi Zi--Comment Button-zi t2ntD6J1DemdOdvh5FB4" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12 2.75a9.25 9.25 0 1 0 4.737 17.197l2.643.817a1 1 0 0 0 1.25-1.25l-.8-2.588A9.25 9.25 0 0 0 12 2.75Z" clip-rule="evenodd"></path>
+                  </svg>
+                </span>
+                {{ ans.comment_count }} comments
               </div>
             </div>
             {% if request.user == ans.owner %}
@@ -70,7 +69,7 @@
                   <input class="quick-comment" name="comment" data-index="{{ forloop.counter0 }}" placeholder="Reply to {{ ans.owner }}" />
                   <div class="comment-hide">
                     <div class="comment-opt-field d-flex">
-                      <button class="btn btn-primary btn-sm btn-quick-add-comment" type="submit" id="" data-answer-id="{{ ans.id }}">Submit</button>
+                      <button class="btn btn-primary btn-sm btn-quick-add-comment" type="submit" id="" data-answer-id="{{ ans.id }}">Comment</button>
                     </div>
                   </div>
                 </div>

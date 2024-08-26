@@ -10,12 +10,14 @@ from django.contrib import messages
 from django.urls import reverse
 from django.db.models import QuerySet
 from django.db.models import Count
+from django.core.files.storage import FileSystemStorage
 
 
 from .forms import *
 from .models import *
 from topic.models import Room, AnswersRoom
 from enum import Enum
+import uuid
 
 
 # Create your views here.
@@ -79,7 +81,6 @@ def user_logout(request):
 
 def get_topic_followed_count(topic: Room, user: User) -> int:
     user_count = TopicFollow.objects.filter(topic_room=topic).aggregate(count=Count('user'))['count']
-    print(f"topic: {topic}, user_count: {user_count}")
     return user_count
 
 
@@ -121,6 +122,7 @@ def edit_userprofile(request, opt=None):
     class EditOption(Enum):
         EDIT_USERNAME = "edit_username"
         EDIT_BIO = "edit_bio"
+        EDIT_AVATAR = "edit_avatar"
 
     if request.method == "POST":
         try:
@@ -136,6 +138,17 @@ def edit_userprofile(request, opt=None):
             bio = request.POST.get("bio")
             user.userprofile.bio = bio
             user.userprofile.save()
+        elif edit_option == EditOption.EDIT_AVATAR:
+            avatar = request.FILES["user-avatar"]
+            if avatar:
+                fs = FileSystemStorage(location="media/main/images/avatars")
+                ext = avatar.name.split('.')[-1]
+                unique_filename = f"{uuid.uuid4()}.{ext}"
+                filename = fs.save(unique_filename, avatar)
+                old_avatar = user.userprofile.avatar.url
+                fs.delete(old_avatar.split("/")[-1])
+                user.userprofile.avatar = f"/main/images/avatars/{filename}"
+                user.userprofile.save()
         return redirect(reverse("edit-userprofile") + "?user=" + str(request.user.id))
     try:
         user = User.objects.get(id=request.GET.get("user"))

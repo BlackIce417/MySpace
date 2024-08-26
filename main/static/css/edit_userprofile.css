@@ -44,7 +44,7 @@ main {
 }
 
 .main-container .img-field .img-wrapper .btn-change-avatar:hover {
-    background-color: rgba(124, 125, 126, 0.6);
+    background-color: #ffffff;
     border-radius: 2px;
 }
 
