@@ -40,10 +40,12 @@
           </div>
           <div class="answer-body">
             <p>{{ ans.answer_body }}</p>
+            <small class="hint" style="margin-left: 0; border: none;">{{ ans.created_at|custom_timesince_or_date }}</small>
           </div>
           <div class="ans-bottombar">
-            <div class="common-field" id="common-field">
-              <small class="hint" style="margin-left: 0">{{ ans.created_at|custom_timesince_or_date }}</small>
+            <div class="common-field d-flex" id="common-field">
+              <button class="btn btn-outline-primary btn-sm">Approve</button>
+              <button class="btn btn-outline-primary btn-sm">Against</button>
               <div class="comment-field" id="comment-field" data-index="{{ forloop.counter0 }}">
                 <span class="d-inline-flex align-items-center">
                   &ZeroWidthSpace;<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="Zi Zi--Comment Button-zi t2ntD6J1DemdOdvh5FB4" fill="currentColor">
