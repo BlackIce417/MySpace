@@ -50,6 +50,30 @@ def formate_comments_info(answer: QuerySet[AnswersRoom]):
     return comments_info_list
 
 
+def formate_answers_info(answers: QuerySet[AnswersRoom], user: UserProfile = None) -> list:
+    # [{"answer": AnswersRoom, "approved_or_not": choice=["approved", "disapproved", "none"], "approve_count": int, "disapprove_count": int}]
+    answer_info_list = []
+    for answer in answers:
+        tmp = {}
+        tmp["answer"] = answer
+        try:
+            tmp["approved_or_not"] = AnswersFollow.objects.get(
+                user=user, answer=answer
+            ).approve_status
+            tmp["approve_count"] = AnswersFollow.objects.filter(
+                answer=answer, approve_status="approve"
+            ).count()
+            tmp["disapprove_count"] = AnswersFollow.objects.filter(
+                answer=answer, approve_status="disapprove"
+            ).count()
+        except:
+            tmp["approved_or_not"] = "none"
+            tmp["approve_count"] = 0
+            tmp["disapprove_count"] = 0
+        answer_info_list.append(tmp)
+    return answer_info_list
+
+
 def topic_room(request):
     if request.method == "POST":
         return redirect("topic")
@@ -76,10 +100,15 @@ def topic_room(request):
     comments_info = formate_comments_info(
         answers,
     )
+    if request.user is not None:
+        answers_info = formate_answers_info(answers, request.user.userprofile)
+    else: 
+        answers_info = formate_answers_info(answers, )
+    print(f"{answers_info}")
     context = {
         "topic": topic,
         "user_profile": user_profile,
-        "answers": answers,
+        "answers": answers_info,
         "comments": comments_info,
         "ans_flag": ans_flag,
         "is_followed": is_followed,
@@ -256,3 +285,18 @@ def unfollow_topic(request, topic_id):
             return redirect(reverse("topic:topic") + "?topic_id=" + str(topic_id))
         except:
             return HttpResponse(f"Cannot find topic {topic_id}")
+
+
+@login_required(login_url="login")
+def approve_answer(request, answer_id, approve_status):
+    try:
+        ansflw_obj, created = AnswersFollow.objects.get_or_create(
+            user=request.user.userprofile,
+            answer=AnswersRoom.objects.get(id=answer_id),
+        )
+        ansflw_obj.approve_status = approve_status
+        ansflw_obj.save()
+    except Exception as e:
+        return HttpResponse(f"Error: {e}")
+    topic_id = AnswersRoom.objects.get(id=answer_id).topic_room.id
+    return redirect(reverse("topic:topic") + "?topic_id=" + str(topic_id))

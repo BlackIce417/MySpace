@@ -24,177 +24,187 @@
         </div>
       </div>
       <hr style="margin: 0;" />
-      {% for ans in answers %}
-        <div class="answer-room">
-          <div class="answer-user">
-            <a href="#"><img src="{{ ans.owner.userprofile.avatar.url }}" alt="Avatar" /></a>
-            <div class="ans-user-textinfo">
-              <a href="{% url 'user-center' %}?username={{ ans.owner.username }}" target="_blank">{{ ans.owner.username }}</a>
-              {% if ans.owner == topic.owner %}
-                <small class="hint">Question Author</small>
-              {% endif %}
-              {% if ans.owner == request.user %}
-                <small class="hint">My Answer</small>
-              {% endif %}
-            </div>
-          </div>
-          <div class="answer-body">
-            <p>{{ ans.answer_body }}</p>
-            <small class="hint" style="margin-left: 0; border: none;">{{ ans.created_at|custom_timesince_or_date }}</small>
-          </div>
-          <div class="ans-bottombar">
-            <div class="common-field d-flex" id="common-field">
-              <button class="btn btn-outline-primary btn-sm">Approve</button>
-              <button class="btn btn-outline-primary btn-sm">Against</button>
-              <div class="comment-field" id="comment-field" data-index="{{ forloop.counter0 }}">
-                <span class="d-inline-flex align-items-center">
-                  &ZeroWidthSpace;<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="Zi Zi--Comment Button-zi t2ntD6J1DemdOdvh5FB4" fill="currentColor">
-                    <path fill-rule="evenodd" d="M12 2.75a9.25 9.25 0 1 0 4.737 17.197l2.643.817a1 1 0 0 0 1.25-1.25l-.8-2.588A9.25 9.25 0 0 0 12 2.75Z" clip-rule="evenodd"></path>
-                  </svg>
-                </span>
-                {{ ans.comment_count }} comments
+      {% for item in answers %}
+        {% with ans=item.answer %}
+          <div class="answer-room">
+            <div class="answer-user">
+              <a href="#"><img src="{{ ans.owner.userprofile.avatar.url }}" alt="Avatar" /></a>
+              <div class="ans-user-textinfo">
+                <a href="{% url 'user-center' %}?username={{ ans.owner.username }}" target="_blank">{{ ans.owner.username }}</a>
+                {% if ans.owner == topic.owner %}
+                  <small class="hint">Question Author</small>
+                {% endif %}
+                {% if ans.owner == request.user %}
+                  <small class="hint">My Answer</small>
+                {% endif %}
               </div>
             </div>
-            {% if request.user == ans.owner %}
-              <div class="d-flex justify-content-end">
-                <a href="{% url 'topic:answer' %}?topic_id={{ topic.id }}" type="button" class="btn btn-primary btn-sm btn-edit-ans">Edit</a>
-                <button class="btn btn-danger btn-sm btn-delete-ans" data-answer-id="{{ ans.id }}" id="delete-ans">Delete</button>
+            <div class="answer-body">
+              <p>{{ ans.answer_body }}</p>
+              <small class="hint" style="margin-left: 0; border: none;">{{ ans.created_at|custom_timesince_or_date }}</small>
+            </div>
+            <div class="ans-bottombar">
+              <div class="common-field d-flex" id="common-field">
+                {% if item.approved_or_not != 'approve' %}
+                  <a class="btn btn-outline-primary btn-sm" href="{% url 'topic:approve_answer' ans.id 'approve' %}">{{item.approve_count}} Approve</a>
+                {% else %}
+                  <a class="btn btn-primary btn-sm" href="{% url 'topic:approve_answer' ans.id 'none' %}">{{item.approve_count}} Approved</a>
+                {% endif %}
+                {% if item.approved_or_not != 'disapprove' %}
+                  <a class="btn btn-outline-primary btn-sm" href="{% url 'topic:approve_answer' ans.id 'disapprove' %}">{{item.disapprove_count}} Disapprove</a>
+                {% else %}
+                  <a class="btn btn-primary btn-sm" href="{% url 'topic:approve_answer' ans.id 'none' %}">{{item.disapprove_count}} Disapproved</a>
+                {% endif %}
+                <div class="comment-field" id="comment-field" data-index="{{ forloop.counter0 }}">
+                  <span class="d-inline-flex align-items-center">
+                    &ZeroWidthSpace;<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="Zi Zi--Comment Button-zi t2ntD6J1DemdOdvh5FB4" fill="currentColor">
+                      <path fill-rule="evenodd" d="M12 2.75a9.25 9.25 0 1 0 4.737 17.197l2.643.817a1 1 0 0 0 1.25-1.25l-.8-2.588A9.25 9.25 0 0 0 12 2.75Z" clip-rule="evenodd"></path>
+                    </svg>
+                  </span>
+                  {{ ans.comment_count }} comments
+                </div>
               </div>
-            {% endif %}
-          </div>
-          <div class="comment-box" id="comment-box-{{ forloop.counter0 }}">
-            <form method="post" action="{% url 'topic:quick_add_comment' 0 %}" class="form-quick-add-comment">
-              {% csrf_token %}
-              <div class="comment-input-field">
-                <img src="{{ request.user.userprofile.avatar.url }}" style="height: 40px;width: 40px; margin: 0 auto" />
-                <div class="comment-text-field">
-                  <input class="quick-comment" name="comment" data-index="{{ forloop.counter0 }}" placeholder="Reply to {{ ans.owner }}" />
-                  <div class="comment-hide">
-                    <div class="comment-opt-field d-flex">
-                      <button class="btn btn-primary btn-sm btn-quick-add-comment" type="submit" id="" data-answer-id="{{ ans.id }}">Comment</button>
+              {% if request.user == ans.owner %}
+                <div class="d-flex justify-content-end">
+                  <a href="{% url 'topic:answer' %}?topic_id={{ topic.id }}" type="button" class="btn btn-primary btn-sm btn-edit-ans">Edit</a>
+                  <button class="btn btn-danger btn-sm btn-delete-ans" data-answer-id="{{ ans.id }}" id="delete-ans">Delete</button>
+                </div>
+              {% endif %}
+            </div>
+            <div class="comment-box" id="comment-box-{{ forloop.counter0 }}">
+              <form method="post" action="{% url 'topic:quick_add_comment' 0 %}" class="form-quick-add-comment">
+                {% csrf_token %}
+                <div class="comment-input-field">
+                  <img src="{{ request.user.userprofile.avatar.url }}" style="height: 40px;width: 40px; margin: 0 auto" />
+                  <div class="comment-text-field">
+                    <input class="quick-comment" name="comment" data-index="{{ forloop.counter0 }}" placeholder="Reply to {{ ans.owner }}" />
+                    <div class="comment-hide">
+                      <div class="comment-opt-field d-flex">
+                        <button class="btn btn-primary btn-sm btn-quick-add-comment" type="submit" id="" data-answer-id="{{ ans.id }}">Comment</button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </form>
-            <div class="chatting-field">
-              <div class="chatting-head">
-                <h5>{{ ans.comment_count }} comments</h5>
-              </div>
-              <hr style="background: #d0d7d3b3; margin: 0;" />
-              <div class="chatting-body">
-                {% for c in comments %}
-                  {% if c.answer == ans.id %}
-                    {% for item in c.comments.level1 %}
-                      {% with comment=item.comment %}
-                        <div class="comment-block">
-                          <div class="comment-block-userinfo d-flex">
-                            <img src="{{ comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px" />
-                            <p>{{ comment.user.username }}</p>
-                            {% if request.user == comment.user %}
-                              <small class="hint">My Comment</small>
-                            {% endif %}
-                          </div>
-                          <p class="comment-content">{{ comment.comment_body }}</p>
-                          <div class="comment-bottom">
-                            <small class="hint">{{ comment.created_at|custom_timesince_or_date }}</small>
-                            <div class="comment-bottom-opt-field">
-                              <a href="{% url 'topic:reply_comment' comment.id %}" class="btn btn-outline-primary btn-sm">Reply</a>
-                              <form method="post" action="{% url 'topic:delete_comment' comment.id %}">
-                                {% csrf_token %}
-                                <button class="btn btn-danger btn-sm">Delete</button>
-                              </form>
+              </form>
+              <div class="chatting-field">
+                <div class="chatting-head">
+                  <h5>{{ ans.comment_count }} comments</h5>
+                </div>
+                <hr style="background: #d0d7d3b3; margin: 0;" />
+                <div class="chatting-body">
+                  {% for c in comments %}
+                    {% if c.answer == ans.id %}
+                      {% for item in c.comments.level1 %}
+                        {% with comment=item.comment %}
+                          <div class="comment-block">
+                            <div class="comment-block-userinfo d-flex">
+                              <img src="{{ comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px" />
+                              <p>{{ comment.user.username }}</p>
+                              {% if request.user == comment.user %}
+                                <small class="hint">My Comment</small>
+                              {% endif %}
+                            </div>
+                            <p class="comment-content">{{ comment.comment_body }}</p>
+                            <div class="comment-bottom">
+                              <small class="hint">{{ comment.created_at|custom_timesince_or_date }}</small>
+                              <div class="comment-bottom-opt-field">
+                                <a href="{% url 'topic:reply_comment' comment.id %}" class="btn btn-outline-primary btn-sm">Reply</a>
+                                <form method="post" action="{% url 'topic:delete_comment' comment.id %}">
+                                  {% csrf_token %}
+                                  <button class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                              </div>
+                            </div>
+                            <div class="replied-comments-field">
+                              {% for replied_comment in item.level2 %}
+                                {% if replied_comment.father_comment == comment %}
+                                  {% if forloop.counter <= 2 %}
+                                    <div class="replied-comment">
+                                      <div class="h-userinfo d-flex">
+                                        <img src="{{ replied_comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px" />
+                                        <p>
+                                          {{ replied_comment.user.username }} {% if replied_comment.father_comment_id != replied_comment.reply_to_comment_id.id %}
+                                            --> {{ replied_comment.reply_to.username }}
+                                          {% endif %}
+                                        </p>
+                                      </div>
+                                      <p class="replied-comment-body">{{ replied_comment.comment_body }}</p>
+                                      <div class="replied-comment-bottom">
+                                        <small class="hint" style="margin-left: 40px">{{ replied_comment.created_at|custom_timesince_or_date }}</small>
+                                        <div class="replied-comment-bottom-opt-field">
+                                          <a href="{% url 'topic:reply_under_father_comment' replied_comment.id replied_comment.father_comment_id %}" class="btn btn-outline-primary btn-sm" target="_blank">Reply</a>
+                                          <form method="post" action="{% url 'topic:delete_comment' replied_comment.id %}">
+                                            {% csrf_token %}
+                                            {% if request.user == replied_comment.user %}
+                                              <button class="btn btn-danger btn-sm">Delete</button>
+                                            {% endif %}
+                                          </form>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  {% elif forloop.counter == 3 %}
+                                    <button class="hint-more-comment">View all comments</button>
+                                    <div class="display-all-comment">
+                                      <div class="backgroud-board"></div>
+                                      <div class="comment-box-wrapper">
+                                        <div class="comment-box-1">
+                                          <div class="father-comment">
+                                            <div class="avatar-field">
+                                              <img src="{{ comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px" />
+                                            </div>
+                                            <div class="text-field">
+                                              <div class="head-field">
+                                                <p>{{ comment.user.username }}</p>
+                                              </div>
+                                              <p>{{ comment.comment_body }}</p>
+                                            </div>
+                                          </div>
+                                          <hr style="margin: 0;" />
+                                          <div class="box-head">
+                                            <p>{{ item.level2|length }} comments</p>
+                                          </div>
+                                          <div class="replied-comment-field">
+                                            {% for replied_comment in item.level2 %}
+                                              {% if replied_comment.father_comment == comment %}
+                                                <div class="replied-comment-block">
+                                                  <div class="avatar-field">
+                                                    <img src="{{ replied_comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px" />
+                                                  </div>
+                                                  <div class="replied-comment-text-area">
+                                                    <p>
+                                                      {{ replied_comment.user.username }} {% if replied_comment.father_comment_id != replied_comment.reply_to_comment_id.id %}
+                                                        --> {{ replied_comment.reply_to.username }}
+                                                      {% endif %}
+                                                    </p>
+                                                    <p class="replied-comment-body">{{ replied_comment.comment_body }}</p>
+                                                  </div>
+                                                </div>
+                                              {% endif %}
+                                            {% endfor %}
+                                          </div>
+                                        </div>
+                                        <button type="button" class="hide-comment-box" aria-label="Close">
+                                          <svg width="24" height="24" viewBox="0 0 24 24" class="Zi Zi--Close css-k6n6wr" fill="rgb(255, 255, 255)">
+                                            <path d="M5.619 4.381A.875.875 0 1 0 4.38 5.62L10.763 12 4.38 18.381A.875.875 0 1 0 5.62 19.62L12 13.237l6.381 6.382a.875.875 0 1 0 1.238-1.238L13.237 12l6.382-6.381A.875.875 0 0 0 18.38 4.38L12 10.763 5.619 4.38Z"></path>
+                                          </svg>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
                             </div>
                           </div>
-                          <div class="replied-comments-field">
-                            {% for replied_comment in item.level2 %}
-                              {% if replied_comment.father_comment == comment %}
-                                {% if forloop.counter <= 2 %}
-                                  <div class="replied-comment">
-                                    <div class="h-userinfo d-flex">
-                                      <img src="{{ replied_comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px" />
-                                      <p>
-                                        {{ replied_comment.user.username }} {% if replied_comment.father_comment_id != replied_comment.reply_to_comment_id.id %}
-                                          --> {{ replied_comment.reply_to.username }}
-                                        {% endif %}
-                                      </p>
-                                    </div>
-                                    <p class="replied-comment-body">{{ replied_comment.comment_body }}</p>
-                                    <div class="replied-comment-bottom">
-                                      <small class="hint" style="margin-left: 40px">{{ replied_comment.created_at|custom_timesince_or_date }}</small>
-                                      <div class="replied-comment-bottom-opt-field">
-                                        <a href="{% url 'topic:reply_under_father_comment' replied_comment.id replied_comment.father_comment_id %}" class="btn btn-outline-primary btn-sm" target="_blank">Reply</a>
-                                        <form method="post" action="{% url 'topic:delete_comment' replied_comment.id %}">
-                                          {% csrf_token %}
-                                          {% if request.user == replied_comment.user %}
-                                            <button class="btn btn-danger btn-sm">Delete</button>
-                                          {% endif %}
-                                        </form>
-                                      </div>
-                                    </div>
-                                  </div>
-                                {% elif forloop.counter == 3 %}
-                                  <button class="hint-more-comment">View all comments</button>
-                                  <div class="display-all-comment">
-                                    <div class="backgroud-board"></div>
-                                    <div class="comment-box-wrapper">
-                                      <div class="comment-box-1">
-                                        <div class="father-comment">
-                                          <div class="avatar-field">
-                                            <img src="{{ comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px" />
-                                          </div>
-                                          <div class="text-field">
-                                            <div class="head-field">
-                                              <p>{{ comment.user.username }}</p>
-                                            </div>
-                                            <p>{{ comment.comment_body }}</p>
-                                          </div>
-                                        </div>
-                                        <hr style="margin: 0;" />
-                                        <div class="box-head">
-                                          <p>{{ item.level2|length }} comments</p>
-                                        </div>
-                                        <div class="replied-comment-field">
-                                          {% for replied_comment in item.level2 %}
-                                            {% if replied_comment.father_comment == comment %}
-                                              <div class="replied-comment-block">
-                                                <div class="avatar-field">
-                                                  <img src="{{ replied_comment.user.userprofile.avatar.url }}" style="width: 24px; height: 24px" />
-                                                </div>
-                                                <div class="replied-comment-text-area">
-                                                  <p>
-                                                    {{ replied_comment.user.username }} {% if replied_comment.father_comment_id != replied_comment.reply_to_comment_id.id %}
-                                                      --> {{ replied_comment.reply_to.username }}
-                                                    {% endif %}
-                                                  </p>
-                                                  <p class="replied-comment-body">{{ replied_comment.comment_body }}</p>
-                                                </div>
-                                              </div>
-                                            {% endif %}
-                                          {% endfor %}
-                                        </div>
-                                      </div>
-                                      <button type="button" class="hide-comment-box" aria-label="Close">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="Zi Zi--Close css-k6n6wr" fill="rgb(255, 255, 255)">
-                                          <path d="M5.619 4.381A.875.875 0 1 0 4.38 5.62L10.763 12 4.38 18.381A.875.875 0 1 0 5.62 19.62L12 13.237l6.381 6.382a.875.875 0 1 0 1.238-1.238L13.237 12l6.382-6.381A.875.875 0 0 0 18.38 4.38L12 10.763 5.619 4.38Z"></path>
-                                        </svg>
-                                      </button>
-                                    </div>
-                                  </div>
-                                {% endif %}
-                              {% endif %}
-                            {% endfor %}
-                          </div>
-                        </div>
-                      {% endwith %}
-                    {% endfor %}
-                  {% endif %}
-                {% endfor %}
+                        {% endwith %}
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
               </div>
             </div>
+            <hr />
           </div>
-          <hr />
-        </div>
+        {% endwith %}
       {% endfor %}
       <form method="post" action="{% url 'topic:delete_answer' 0 %}" id="form-delete-answer">
         {% csrf_token %}

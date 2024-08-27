@@ -76,7 +76,7 @@ body {
     align-content: center;
 } */
 
-.ans-bottombar .common-field button:nth-of-type(2){
+.ans-bottombar .common-field a:nth-of-type(2){
     margin-left: 5px;
 }
 

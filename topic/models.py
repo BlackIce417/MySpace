@@ -64,7 +64,15 @@ class CommentsRoom(models.Model):
         blank=True,
         verbose_name="father comment",
     )
-    level = models.IntegerField(default=1, choices=[(1, 'Level 1'), (2, 'Level 2'),], null=False, blank=False)
+    level = models.IntegerField(
+        default=1,
+        choices=[
+            (1, "Level 1"),
+            (2, "Level 2"),
+        ],
+        null=False,
+        blank=False,
+    )
 
     def __str__(self):
         return f"{self.answer_room} - {self.user}"
@@ -80,7 +88,29 @@ class TopicFollow(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.room}"
-    
+
     class Meta:
-        unique_together = ('user', 'topic_room')
+        unique_together = ("user", "topic_room")
+        ordering = ["-follow_at"]
+
+
+class AnswersFollow(models.Model):
+    user = models.ForeignKey("main.UserProfile", on_delete=models.CASCADE)
+    answer = models.ForeignKey(AnswersRoom, on_delete=models.CASCADE)
+    approve_status = models.CharField(
+        choices=[
+            ("approve", "approve"),
+            ("disapprove", "disapprove"),
+        ],
+        default="none",
+        max_length=12,
+    )
+
+    follow_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.answer}"
+
+    class Meta:
+        unique_together = ("user", "answer")
         ordering = ["-follow_at"]

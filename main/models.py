@@ -11,6 +11,7 @@ class UserProfile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     avatar = models.ImageField(upload_to='main/images/avatars/', blank=True, default='main/images/avatars/default-avatar.png')
     followed_topics = models.ManyToManyField(Room, related_name='followers', through='topic.TopicFollow')
+    followed_answers = models.ManyToManyField(AnswersRoom, related_name='followers', through='topic.AnswersFollow')
 
     def __str__(self):
         return self.user.username
