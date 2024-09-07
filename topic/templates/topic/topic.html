@@ -55,7 +55,7 @@
                 {% else %}
                   <a class="btn btn-primary btn-sm" href="{% url 'topic:approve_answer' ans.id 'none' %}">{{item.disapprove_count}} Disapproved</a>
                 {% endif %}
-                <div class="comment-field" id="comment-field" data-index="{{ forloop.counter0 }}">
+                <div class="comment-field" id="comment-field" data-index="{{ forloop.counter0 }}" data-clickable="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                   <span class="d-inline-flex align-items-center">
                     &ZeroWidthSpace;<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="Zi Zi--Comment Button-zi t2ntD6J1DemdOdvh5FB4" fill="currentColor">
                       <path fill-rule="evenodd" d="M12 2.75a9.25 9.25 0 1 0 4.737 17.197l2.643.817a1 1 0 0 0 1.25-1.25l-.8-2.588A9.25 9.25 0 0 0 12 2.75Z" clip-rule="evenodd"></path>
@@ -245,7 +245,14 @@
     
       $(`.comment-field`).click(function () {
         let index = $(this).data('index')
-        $(`#comment-box-${index}`).toggle()
+        let clickable = $(this).data('clickable')
+        if (clickable === false){
+          alert("Please sign in")
+        }
+        else {
+          $(`#comment-box-${index}`).toggle()
+        }
+        
       })
     
       $('.quick-comment').click(function () {

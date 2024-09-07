@@ -100,7 +100,8 @@ def topic_room(request):
     comments_info = formate_comments_info(
         answers,
     )
-    if request.user is not None:
+    # print(request.user is not None)
+    if request.user.is_authenticated:
         answers_info = formate_answers_info(answers, request.user.userprofile)
     else: 
         answers_info = formate_answers_info(answers, )
