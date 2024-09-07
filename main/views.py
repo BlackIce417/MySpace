@@ -18,6 +18,7 @@ from .models import *
 from topic.models import Room, AnswersRoom
 from enum import Enum
 import uuid
+import hashlib
 
 
 # Create your views here.
@@ -142,11 +143,17 @@ def edit_userprofile(request, opt=None):
             avatar = request.FILES["user-avatar"]
             if avatar:
                 fs = FileSystemStorage(location="media/main/images/avatars")
+
+                md5 = hashlib.md5()
+                for chunk in avatar.chunks():
+                    md5.update(chunk)
+                md5_hash = md5.hexdigest().upper()
+
                 ext = avatar.name.split('.')[-1]
-                unique_filename = f"{uuid.uuid4()}.{ext}"
+                unique_filename = f"IMG_{md5_hash}.{ext}"
                 filename = fs.save(unique_filename, avatar)
-                old_avatar = user.userprofile.avatar.url
-                fs.delete(old_avatar.split("/")[-1])
+                # old_avatar = user.userprofile.avatar.url
+                # fs.delete(old_avatar.split("/")[-1])
                 user.userprofile.avatar = f"/main/images/avatars/{filename}"
                 user.userprofile.save()
         return redirect(reverse("edit-userprofile") + "?user=" + str(request.user.id))
