@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>User Center</title>
+    <title>{{ user.username }}'s Center</title>
     <link rel="stylesheet" href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/usercenter_style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/common_style.css' %}" />
@@ -43,6 +43,7 @@
             <a href="{% url 'user-center' %}?username={{ user.username }}">All</a>
             <a href="{% url 'user-center-opt' 'topic' %}?username={{ user.username }}">Topic</a>
             <a href="{% url 'user-center-opt' 'answer' %}?username={{ user.username }}">Answer</a>
+            <a href="{% url 'user-center-opt' 'gallery' %}?username={{ user.username }}">Gallery</a>
             <a href="#">Intrest</a>
           </div>
           <div class="usercenter-content">
@@ -54,6 +55,8 @@
                   Topics
                 {% elif opt == 'answer' %}
                   Answers
+                {% elif opt == 'gallery' %}
+                  Gallery
                 {% endif %}
               </span>
             </h5>
@@ -64,6 +67,8 @@
               {% include 'main/user_center_topic.html' %}
             {% elif opt == 'answer' %}
               {% include 'main/user_center_answer.html' %}
+            {% elif opt == 'gallery' %}
+              {% include 'main/user_center_gallery.html' %}
             {% endif %}
           </div>
         </div>

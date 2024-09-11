@@ -1,0 +1,36 @@
+<div class="user-center-gallery">
+  <a href="{% url 'picture:create-new-gallery' %}" class="btn btn-primary btn-add-gallery" target="_blank">New</a>
+  <div class="gallery-field">
+    {% for item in gallery %}
+      <div class="gallery-block">
+        <div class="user-info">
+          <img src="{{ item.gallery.owner.userprofile.avatar.url }}" />
+          <span>{{ item.gallery.owner.username }}</span>
+          <small class="hint" style="border: none;">Published at {{ item.gallery.created_at|date:'Y-m-d H:i' }}</small>
+        </div>
+        <div class="img-field">
+          {% if item.pictures_count == 0 %}
+            <span>Empty Gallery</span>
+          {% endif %}
+        </div>
+      </div>
+      <hr class="common-hr-style" style="width: 100%;" />
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .user-center-gallery {
+    margin: 10px;
+  
+    .gallery-field .gallery-block {
+      margin: 10px 0;
+    }
+  
+    .gallery-field .gallery-block .user-info img {
+      height: 40px;
+      width: 40px;
+      border-radius: 2px;
+    }
+  }
+</style>

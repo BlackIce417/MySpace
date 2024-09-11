@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "MySpace",
     "main.apps.MainConfig",
     "topic.apps.TopicConfig",
+    "picture.apps.PictureConfig",
 ]
 
 MIDDLEWARE = [

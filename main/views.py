@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.urls import reverse
 from django.db.models import QuerySet
@@ -16,8 +15,8 @@ from django.core.files.storage import FileSystemStorage
 from .forms import *
 from .models import *
 from topic.models import Room, AnswersRoom
+from picture.models import Gallery, Picture
 from enum import Enum
-import uuid
 import hashlib
 
 
@@ -115,8 +114,23 @@ def user_center(request, opt="all"):
         except Exception as e:
             return HttpResponse(f"Error: {e}")
         context["answers"] = answers
-    return render(request, "main/user_center.html", context)
-
+    elif opt == "gallery":
+        try: 
+            galleries = Gallery.objects.filter(owner=user)
+        except Exception as e:
+            return HttpResponse(f"Error: {e}")
+        gallery_info = []
+        for gallery in galleries:
+            try:
+                pictures = Picture.objects.filter(gallery=gallery)
+                pictures_count = pictures.count()
+            except:
+                pictures = []
+                pictures_count = 0
+            gallery_info.append({"gallery": gallery, "pictures": pictures, "pictures_count": pictures_count})
+        print(gallery_info)
+        context["gallery"] = gallery_info
+    return render(request, "main/user_center.html", context) 
 
 @login_required(login_url="login")
 def edit_userprofile(request, opt=None):

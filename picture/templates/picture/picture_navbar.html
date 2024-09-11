@@ -1,0 +1,27 @@
+<nav class="navbar bg-body-tertiary">
+  <div class="container-fluid d-flex justify-content-between">
+    <a class="navbar-brand" href="#">MySpace</a>
+    <a href="{% url 'user-center' %}?username={{ user.username }}" class="user-info" target="_blank">
+      <img src="{{ request.user.userprofile.avatar.url }}" />
+      <span>{{ request.user.username }}</span>
+    </a>
+  </div>
+</nav>
+
+<style>
+    .user-info{
+        text-decoration: none;
+    }
+
+    .user-info img {
+        height: 38px;
+        width: 38px;
+        border-radius: 50%;
+        margin: 0 10px;
+    }
+    .user-info span {
+        color: #000;
+        font-size: 20px;
+        margin: auto 0;
+    }
+</style>
