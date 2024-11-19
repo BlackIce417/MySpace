@@ -4,13 +4,17 @@
     {% for item in gallery %}
       <div class="gallery-block">
         <div class="user-info">
-          <img src="{{ item.gallery.owner.userprofile.avatar.url }}" />
-          <span>{{ item.gallery.owner.username }}</span>
+          {% comment %} <img src="{{ item.gallery.owner.userprofile.avatar.url }}" /> {% endcomment %}
+          <span>{{ item.gallery.name }}</span>
           <small class="hint" style="border: none;">Published at {{ item.gallery.created_at|date:'Y-m-d H:i' }}</small>
         </div>
         <div class="img-field">
           {% if item.pictures_count == 0 %}
             <span>Empty Gallery</span>
+          {% else%}
+            {% for picture in item.pictures %}
+
+            {% endfor %}
           {% endif %}
         </div>
       </div>
