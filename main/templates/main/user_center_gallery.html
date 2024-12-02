@@ -6,17 +6,19 @@
         <div class="user-info">
           {% comment %} <img src="{{ item.gallery.owner.userprofile.avatar.url }}" /> {% endcomment %}
           <span>{{ item.gallery.name }}</span>
-          <small class="hint" style="border: none;">Published at {{ item.gallery.created_at|date:'Y-m-d H:i' }}</small>
         </div>
         <div class="img-field">
           {% if item.pictures_count == 0 %}
             <span>Empty Gallery</span>
           {% else%}
             {% for picture in item.pictures %}
-
+              <img src="{{picture.image.url}}" class="single-img" />
             {% endfor %}
           {% endif %}
         </div>
+        <small class="hint" style="border: none;margin-left: 0;padding-left: 0;">Published at {{ item.gallery.created_at|date:'Y-m-d H:i' }}</small>
+        <a class="btn-add" href="{% url 'picture:add-picture' gallery_id=item.gallery.id %}">Add</a>
+        <a class="btn-delete-gallery" href="{% url 'picture:delete-gallery' gallery_id=item.gallery.id %}" data-gallery-id="{{ item.gallery.id }}">Delete</a>
       </div>
       <hr class="common-hr-style" style="width: 100%;" />
     {% endfor %}
@@ -36,5 +38,33 @@
       width: 40px;
       border-radius: 2px;
     }
+
+    .gallery-field .gallery-block .btn-add {
+      border: none;
+      background-color: #fff;
+      color: #a9a9a9;
+      font-weight: lighter;
+      text-decoration: none;
+    }
+
+    .gallery-field .gallery-block .btn-delete-gallery {
+      border: none;
+      background-color: #fff;
+      color: #a9a9a9;
+      font-weight: lighter;
+      text-decoration: none;
+    }
+
+    .gallery-field .single-img {
+      width: 160px;
+      height: 90px;
+      object-fit: cover;  
+    }
   }
 </style>
+
+<script>
+  $(document).ready(function() {
+
+  });
+</script>

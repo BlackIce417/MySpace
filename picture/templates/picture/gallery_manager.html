@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/common_style.css' %}" />
+    <title>Gallery Manager</title>
+  </head>
+  <style>
+    main {
+      .title {
+        margin: auto;
+      }
+    }
+    
+    .single-img {
+      width: 150px;
+      height: 100px;
+      display: inline-block;
+      border: 1px solid #ccc;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-origin: border-box;
+      background-size: cover;
+    }
+  </style>
+  <body>
+    <main class="container">
+      <h5 class="title">Manage Your Gallery</h5>
+      <div>Gallery Name: {{ gallery.name }}</div>
+      <div>Description: {{ gallery.description }}</div>
+      <form method="POST" enctype="multipart/form-data" action="#">
+        {% csrf_token %}
+        <label for="upload-image">Upload</label>
+        <input class="btn upload-image" id="upload-image" name="upload-image" type="file" accept="image/* video/*" multiple />
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </form>
+      <div class="gallery">
+        <div>
+          <p>{{ pictures_count }} Images</p>
+        </div>
+        {% for picture in pictures %}
+          <div class="single-img" style="background-image: url({{ picture.image.url }})"></div>
+        {% endfor %}
+      </div>
+    </main>
+  </body>
+  <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+</html>
